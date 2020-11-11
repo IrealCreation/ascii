@@ -10,3 +10,21 @@ Actor::Actor(std::string visualAspect, int color) : m_visualAspect(visualAspect)
 
 Actor::~Actor(){}
 // ------------------------------------
+
+
+/// <summary>
+/// Move the actor to the specified coordinates
+/// </summary>
+/// <param name="x">X coordinate. If null, stay unchanged.</param>
+/// <param name="y">Y coordinate. if null, stay unchanged.</param>
+/// <returns>True if the move could be done, false otherwise</returns>
+bool Actor::MoveTo(int x, int y) {
+	bool valid = true;
+	//TODO: check if the move can be done (maybe by the GameLogic? maybe it's already done and we don't need this bool?)
+
+	if (valid) {
+		m_positionX = (x != NULL) ? x : m_positionX;
+		m_positionY = (y != NULL) ? y : m_positionY;
+	}
+	return valid;
+}

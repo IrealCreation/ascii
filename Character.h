@@ -1,11 +1,11 @@
 #pragma once
 
 // ----- Headers -----
-#include "Actor.h"
+#include "Destructible.h"
 // -------------------
 
 // ----- Classe -----
-class Character : public Actor
+class Character : public Destructible
 {
 
 public:

@@ -1,5 +1,6 @@
 .idea
 .vs
+Debug
 ascii.sln
 ascii.vcxproj
 ascii.vcxproj.filters
