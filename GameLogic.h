@@ -22,9 +22,13 @@ class GameLogic
 public:
 	GameLogic();
 	~GameLogic();
+	
 	void newGame();
+
 
 
 protected:
 
+private:
+	void initialisation();
 };

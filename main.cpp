@@ -1,7 +1,13 @@
+#include "GameLogic.h"
+
 #include <iostream>
 
-main()
+
+int main()
 {
-   std::cout << "Hello, World!" << std::endl;
+	GameLogic Game;
+	Game.newGame();
+
+   //std::cout << "Hello, World!" << std::endl;
    return 0;
 }
