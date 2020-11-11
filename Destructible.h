@@ -11,8 +11,8 @@ class Destructible : public Actor
 
 	public:
 		// ----- Constructeur/Destructeur -----
-		Destructible();
-		~Destructible();
+		Destructible(int x, int y, int health, std::string visualAspect);
+		Destructible(int x, int y, int health, std::string visualAspect, int color);
 		// ------------------------------------
 
 

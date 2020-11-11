@@ -2,7 +2,8 @@
 
 
 // ----- Constructeur/Destructeur -----
-Destructible::Destructible() {}
+Destructible::Destructible(int x, int y, int health, std::string visualAspect) : Actor(x, y, visualAspect), m_health = health {}
+Destructible::Destructible(int x, int y, int health, std::string visualAspect, int color) : Actor(x, y, visualAspect, int color), m_health = health {}
 
 
 Destructible::~Destructible() {}

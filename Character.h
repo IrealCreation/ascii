@@ -10,7 +10,7 @@ class Character : public Destructible
 
 public:
 // ----- Constructeur/Destructeur -----
-Character();
+Character(int x, int y, int health);
 ~Character();
 // ------------------------------------
 

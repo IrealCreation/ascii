@@ -9,9 +9,8 @@ class Actor
 {
 	public:
 	// ----- Constructeur/Destructeur -----
-		Actor();
-		Actor(std::string visualAspect);
-		Actor(std::string visualAspect, int color);
+		Actor(int x, int y, std::string visualAspect);
+		Actor(int x, int y, std::string visualAspect, int color);
 
 		~Actor();
 	// ------------------------------------

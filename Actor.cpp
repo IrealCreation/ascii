@@ -2,11 +2,9 @@
 
 
 // ----- Constructeur/Destructeur -----
-Actor::Actor(){}
+Actor::Actor(int x, int y, std::string visualAspect) : m_positionX(x), m_positionY(y), m_visualAspect(visualAspect) {}
 
-Actor::Actor(std::string visualAspect) : m_visualAspect(visualAspect) {}
-
-Actor::Actor(std::string visualAspect, int color) : m_visualAspect(visualAspect), m_color(color) {}
+Actor::Actor(int x, int y, std::string visualAspect, int color) : m_positionX(x), m_positionY(y), m_visualAspect(visualAspect), m_color(color) {}
 
 Actor::~Actor(){}
 // ------------------------------------
@@ -20,7 +18,7 @@ Actor::~Actor(){}
 /// <returns>True if the move could be done, false otherwise</returns>
 bool Actor::MoveTo(int x, int y) {
 	bool valid = true;
-	//TODO: check if the move can be done (maybe by the GameLogic? maybe it's already done and we don't need this bool?)
+	//TODO: check if the move can be done (maybe by the GameLogic?)
 
 	if (valid) {
 		m_positionX = (x != NULL) ? x : m_positionX;
