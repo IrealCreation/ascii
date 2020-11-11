@@ -1,6 +1,7 @@
 #pragma once
 
 // ----- Headers -----
+#include <string>
 // -------------------
 
 // ----- Classe -----
@@ -8,8 +9,11 @@ class Actor
 {
 public:
 // ----- Constructeur/Destructeur -----
-Actor();
-~Actor();
+	Actor();
+	Actor(std::string visualAspect);
+	Actor(std::string visualAspect, int color);
+
+	~Actor();
 // ------------------------------------
 
 
@@ -19,6 +23,10 @@ Actor();
 
 protected:
 // ----- Attributs -----
+	int m_positionX;
+	int m_positionY;
+	std::string m_visualAspect = "/";
+	int m_color = 7;
 // ---------------------
 
 };
