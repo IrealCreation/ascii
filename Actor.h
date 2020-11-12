@@ -21,7 +21,7 @@ class Actor
 
 		// ----- Méthodes -----
 		bool MoveTo(int x, int y);
-		virtual void Tick() = 0;
+		virtual void Tick(float deltaTime) = 0;
 		// --------------------
 
 	protected:

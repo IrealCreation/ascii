@@ -13,20 +13,22 @@ class Comet : public Destructible
 {
 public:
 	// ----- Constructeur/Destructeur -----
-	Comet(int x, int y, std::string direction, float speed);
+	Comet(int x, int y, std::string direction, bool way, float speed);
 
 	~Comet();
 	// ------------------------------------
 
 
 	// ----- Méthodes -----
-	void Tick();
+	void Tick(float deltaTime);
 	// --------------------
 
 protected:
 	// ----- Attributs -----
 	std::string m_direction;
+	bool m_way; // Is it moving in positive coordinates, or negative coordinates?
 	float m_speed;
+	float m_moveRemaining;
 	// ---------------------
 
 };
