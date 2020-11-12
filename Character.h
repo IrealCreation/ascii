@@ -4,26 +4,26 @@
 #include "Destructible.h"
 // -------------------
 
-// ----- Classe -----
+// ----- Class -----
 class Character : public Destructible
 {
 
-	public:
-		// ----- Constructeur/Destructeur -----
-		Character(int x, int y, int health);
-		~Character();
-		// ------------------------------------
+public:
+	// ----- Constructeur/Destructeur -----
+	Character(int x, int y, int health);
+	~Character();
+	// ------------------------------------
 
 
-		// ----- Méthodes -----
-		void Tick();
-		// --------------------
+	// ----- Méthodes -----
+	void Tick();
+	// --------------------
 
 
-	protected:
-		// ----- Attributs -----
+protected:
+	// ----- Attributs -----
 
-		// ---------------------
+	// ---------------------
 
 
 };

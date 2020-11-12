@@ -24,12 +24,16 @@ public:
 	// --------------------
 
 protected:
-	// ----- Attributs -----
 	std::string m_direction;
-	bool m_way; // Is it moving in positive coordinates, or negative coordinates?
+	
+	/// <summary>
+	/// Is it moving towards positive coordinates (true), or negative coordinates?
+	/// </summary>
+	bool m_way;
+	
 	float m_speed;
+	
 	float m_moveRemaining;
-	// ---------------------
 
 };
 // ------------------
