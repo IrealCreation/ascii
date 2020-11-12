@@ -5,6 +5,9 @@
 // -------------------
 
 // ----- Classe -----
+/// <summary>
+///	Abstract class for an actor that can receive damages and be destroyed
+/// </summary>
 class Destructible : public Actor
 {
 	// A destructible is an actor that can receive damages and be destroyed
@@ -13,6 +16,8 @@ class Destructible : public Actor
 		// ----- Constructeur/Destructeur -----
 		Destructible(int x, int y, int health, std::string visualAspect);
 		Destructible(int x, int y, int health, std::string visualAspect, int color);
+
+		~Destructible();
 		// ------------------------------------
 
 
