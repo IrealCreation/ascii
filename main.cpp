@@ -1,5 +1,7 @@
 #include "GameLogic.h"
-#include "Actor.h"
+#include "Character.h"
+#include "Comet.h"
+#include "Enemy.h"
 
 #include "Layout.h"
 
@@ -11,11 +13,11 @@
 
 
 // ----- TESTS ONLY/FULLSCREEN MODE -----
-/// ! Le fullscreen est lancé avec la classe GameLogic !
-/// (fonction à supprimer après tests)
+/// ! Le fullscreen est lancï¿½ avec la classe GameLogic !
+/// (fonction ï¿½ supprimer aprï¿½s tests)
 void fullScreen()
 {
-// ----- Gestion de la police d'écriture -----
+// ----- Gestion de la police d'ï¿½criture -----
 CONSOLE_FONT_INFOEX cfi;
 cfi.cbSize = sizeof(cfi);
 cfi.nFont = 0;
@@ -27,7 +29,7 @@ wcscpy_s(cfi.FaceName, L"Verdana"); // Choose your font
 SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
 // --------------------------------------------
 
-// ----- Affiche en plein écran -----
+// ----- Affiche en plein ï¿½cran -----
 ShowWindow(GetConsoleWindow(), SW_MAXIMIZE);
 // ----------------------------------
 
@@ -35,7 +37,7 @@ ShowWindow(GetConsoleWindow(), SW_MAXIMIZE);
 SendMessage(GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000);
 // -----------------------------------
 
-// ----- Supprime la barre de défilement verticale -----
+// ----- Supprime la barre de dï¿½filement verticale -----
 HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
 CONSOLE_SCREEN_BUFFER_INFO info;
 GetConsoleScreenBufferInfo(handle, &info);
@@ -50,13 +52,12 @@ SetConsoleScreenBufferSize(handle, new_size);
 // --------------------------------------
 
 
-
 int main()
 {
 
 	// ----- Test de spawn d'actors -----
 	
-	// Création de la fenêtre principale
+	// Crï¿½ation de la fenï¿½tre principale
 	fullScreen();
 	int const sizeX(35), sizeY(35);
 	Layout MainScreen(sizeX, sizeY, 39, 5);
@@ -64,7 +65,7 @@ int main()
 	MainScreen.setGrid(17, 17, "P"); // Position du joueur au centre
 	MainScreen.refresh();
 
-	// Création d'une fenêtre secondaire pour débug.
+	// Crï¿½ation d'une fenï¿½tre secondaire pour dï¿½bug.
 	Layout Debug(25, 15, 5, 3, MainScreen, "x");
 	Debug.createBorders("#");
 	Debug.setGrid(2, 3, "Position du joueur");
@@ -72,12 +73,12 @@ int main()
 	Debug.setGrid(2, 9, "- Position y -");
 	Debug.refresh();
 
-	// Création d'un tableaux de booléens pour indiquer si un objet se trouve à un endroit définit de la map.
-	// La grille d'actors a [10][10] cases de plus. Elle commence en -5/-5 et finit en 40/40 par rapport à la fenêtre de la map ;
-	// tout ce qui est en dessous de 0 et au dessus de 35 dans la grille ne s'affiche pas à l'écran.
+	// Crï¿½ation d'un tableaux de boolï¿½ens pour indiquer si un objet se trouve ï¿½ un endroit dï¿½finit de la map.
+	// La grille d'actors a [10][10] cases de plus. Elle commence en -5/-5 et finit en 40/40 par rapport ï¿½ la fenï¿½tre de la map ;
+	// tout ce qui est en dessous de 0 et au dessus de 35 dans la grille ne s'affiche pas ï¿½ l'ï¿½cran.
 	bool actors[sizeX + 10][sizeY + 10];
 	
-	// Initialisation des éléments de la variable
+	// Initialisation des ï¿½lï¿½ments de la variable
 	for (int x = 0; x < (sizeX + 10); x++)
 	{
 		for (int y = 0; y < (sizeY + 10); y++)
@@ -86,17 +87,17 @@ int main()
 		}
 	}
 	
-	// Set un élément de la variable pour TESTS
+	// Set un ï¿½lï¿½ment de la variable pour TESTS
     actors[15][15] = true;
 
-	// Display l'élément s'il est présent dans l'écran
+	// Display l'ï¿½lï¿½ment s'il est prï¿½sent dans l'ï¿½cran
 	for (int x = 0; x < (sizeX + 10); x++)
 	{
 		for (int y = 0; y < (sizeY + 10); y++)
 		{
 			if (actors[x][y] == true && x > 4 && x < 41 && y > 4 && y < 41)
 			{
-				MainScreen.setGrid(x - 5, y - 5, "B", 4); // On enlève 5 et 5 en x et y pour le positionner correctement.
+				MainScreen.setGrid(x - 5, y - 5, "B", 4); // On enlï¿½ve 5 et 5 en x et y pour le positionner correctement.
 			}
 		}
 	}
@@ -104,7 +105,7 @@ int main()
 
 	// ----------------------------------
 
-	// ----- Début du jeu -----
+	// ----- Dï¿½but du jeu -----
 	// GameLogic Game;
 	// Game.newGame();
 	// ------------------------
@@ -113,3 +114,4 @@ int main()
    //std::cout << "Hello, World!" << std::endl;
    return 0;
 }
+
