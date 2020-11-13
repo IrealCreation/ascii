@@ -6,7 +6,7 @@
 // _getch() pour récupérer les inputs du joueur
 
 // ----- Constructeurs -----
-GameLogic::GameLogic() : m_mapSizeX(50), m_mapSizeY(50)
+GameLogic::GameLogic() : m_mapSizeX(50), m_mapSizeY(50), m_timingMs(50), m_timingS(m_timingMs / 1000.00)
 {
 	initialisation();
 }
@@ -244,3 +244,16 @@ void GameLogic::scrolling()
 /// 
 /// Scroll x
 // -------------------------------
+
+
+
+
+// ------------------------------
+/// 1- inputs?
+/// 2- actor's actions? (fonction tick pour chaque acteur)
+/// 3- screen refresh
+/// 
+/// 
+/// std::this_thread::sleep_for(std::chrono::milliseconds(timingMs));
+/// 
+// ------------------------------

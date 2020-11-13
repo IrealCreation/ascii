@@ -53,7 +53,7 @@ private:
 	// ----- Attributs -----
 	std::vector<Actor> m_spawnedActors;
 	int m_mapSizeX, m_mapSizeY;
-
+	float m_timingMs, m_timingS; // Timing du jeu en ms et s / paramètre des fonctions tick des acteurs.
 	//std::string* bigGrid; // Grille large
 	// ---------------------
 	
