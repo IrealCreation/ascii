@@ -1,7 +1,13 @@
 #include "Comet.h"
 
 // ----- Constructeur/Destructeur -----
-Comet::Comet(int x, int y, std::string direction, bool way, float speed) : Destructible(x, y, 10, "c"), m_direction(direction), m_way(way), m_speed(speed) {}
+Comet::Comet(int x, int y, std::string direction, bool way, float speed) : Destructible(x, y, 10, "c")
+{
+	m_direction = direction;
+	m_way = way;
+	m_speed = speed;
+	m_collisionDamages = 10;
+}
 
 Comet::~Comet() {}
 // ------------------------------------

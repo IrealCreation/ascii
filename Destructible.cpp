@@ -30,3 +30,8 @@ void Destructible::Destroy() {
 
 	//TODO: inform the GameLogic that I'm not here anymore.
 }
+
+void Destructible::CollideWith(Actor& collider)
+{
+	ReceiveDamages(collider.GetCollisionDamages());
+}

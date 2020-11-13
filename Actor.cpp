@@ -9,20 +9,25 @@ Actor::Actor(int x, int y, std::string visualAspect, int color) : m_positionX(x)
 Actor::~Actor(){}
 // ------------------------------------
 
-
-/// <summary>
-/// Move the actor to the specified coordinates
-/// </summary>
-/// <param name="x">X coordinate. If null, stay unchanged.</param>
-/// <param name="y">Y coordinate. if null, stay unchanged.</param>
-/// <returns>True if the move could be done, false otherwise</returns>
 bool Actor::MoveTo(int x, int y) {
 	bool valid = true;
-	//TODO: check if the move can be done (maybe by the GameLogic?)
+
+	//TODO: implement GameLogic as following
+	//Actor actorAtDestination = GameLogic.GetActorAt(x, y);
 
 	if (valid) {
 		m_positionX = (x != NULL) ? x : m_positionX;
 		m_positionY = (y != NULL) ? y : m_positionY;
 	}
 	return valid;
+}
+
+void Actor::CollideWith(Actor& collider)
+{
+	return;
+}
+
+int Actor::GetCollisionDamages()
+{
+	return m_collisionDamages;
 }
