@@ -24,16 +24,16 @@ public:
 	// --------------------
 
 protected:
-	std::string m_direction;
+	std::string m_axis;
 	
 	/// <summary>
 	/// Is it moving towards positive coordinates (true), or negative coordinates?
 	/// </summary>
-	bool m_way;
+	bool m_direction;
 	
 	float m_speed;
 	
-	float m_moveRemaining;
+	float m_moveRemaining = 0;
 
 };
 // ------------------

@@ -10,10 +10,13 @@ public:
 	~Enemy();
 	// ------------------------------------
 
-	void Tick();
+	void Tick(float deltaTime);
 
 protected:
 	std::string m_name;
+	
 	float m_speed;
+
+	float m_moveRemaining = 0;
 };
 

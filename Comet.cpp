@@ -3,8 +3,8 @@
 // ----- Constructeur/Destructeur -----
 Comet::Comet(int x, int y, std::string direction, bool way, float speed) : Destructible(x, y, 10, "c")
 {
-	m_direction = direction;
-	m_way = way;
+	m_axis = direction;
+	m_direction = way;
 	m_speed = speed;
 	m_collisionDamages = 10;
 }
@@ -24,13 +24,13 @@ void Comet::Tick(float deltaTime)
 	// Perform the move in the programmed direction
 	int newPosX = m_positionX;
 	int newPosY = m_positionY;
-	if(m_direction == "x")
+	if(m_axis == "x")
 	{
-		newPosX += intMove * (m_way) ? 1 : -1;
+		newPosX += intMove * (m_direction) ? 1 : -1;
 	}
 	else
 	{
-		newPosY += intMove * (m_way) ? 1 : -1;
+		newPosY += intMove * (m_direction) ? 1 : -1;
 	}
 	MoveTo(newPosX, newPosY);
 }
