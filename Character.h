@@ -4,7 +4,6 @@
 #include "Destructible.h"
 // -------------------
 
-// ----- Class -----
 class Character : public Destructible
 {
 
@@ -27,5 +26,4 @@ protected:
 
 
 };
-// ------------------
 

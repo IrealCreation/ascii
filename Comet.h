@@ -5,7 +5,6 @@
 #include <string>
 // -------------------
 
-// ----- Class -----
 /// <summary>
 ///	A celestial object moving linearly and inflicting damages if collided
 /// </summary>
@@ -18,7 +17,7 @@ public:
 	~Comet();
 	// ------------------------------------
 
-
+	
 	// ----- Méthodes -----
 	void Tick(float deltaTime);
 
@@ -45,5 +44,4 @@ protected:
 	float m_moveRemaining = 0;
 
 };
-// ------------------
 

@@ -4,7 +4,6 @@
 #include "Actor.h"
 // -------------------
 
-// ----- Classe -----
 /// <summary>
 ///	Abstract class for an actor that can receive damages and be destroyed
 /// </summary>
@@ -36,5 +35,4 @@ protected:
 
 
 };
-// ------------------
 
