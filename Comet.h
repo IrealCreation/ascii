@@ -24,6 +24,9 @@ public:
 	// --------------------
 
 protected:
+	/// <summary>
+	/// "X" if it moves horizontally, "Y" otherwise
+	/// </summary>
 	std::string m_axis;
 	
 	/// <summary>
