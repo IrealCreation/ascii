@@ -1,3 +1,8 @@
-﻿  GameLogic.cpp
-D:\Programing\ASCII (Asteroids - Space Constellations and Introverse Implications)\ascii\GameLogic.cpp(28,7): warning C4996: 'wcscpy': This function or variable may be unsafe. Consider using wcscpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+﻿  Actor.cpp
+  Character.cpp
+  GameLogic.cpp
+D:\Programing\ASCII (Asteroids - Space Constellations and Introverse Implications)\ascii\GameLogic.cpp(206,25): warning C4018: '<': signed/unsigned mismatch
+  Layout.cpp
+  main.cpp
+  Generating Code...
   ascii.vcxproj -> D:\Programing\ASCII (Asteroids - Space Constellations and Introverse Implications)\ascii\Debug\ascii.exe

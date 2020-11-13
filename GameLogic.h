@@ -7,6 +7,11 @@
 
 #include <thread> // Contrôle du timing du jeu 
 #include <chrono>
+
+#include <vector>
+
+#include "Actor.h"
+#include "Layout.h"
 // -------------------
 
 // ----- Macros -----
@@ -25,10 +30,31 @@ public:
 	
 	void newGame();
 
+	void setMap(Layout& Sreen);
+	
+	void addActor(Actor &element);
+	void removeActor(int actorId);
+	void setActorPositionOnScreen(int actorId, Layout &Screen);
+
+	void scrolling();
+
+
 
 
 protected:
 
+
+
 private:
+	// ----- Méthodes -----
 	void initialisation();
+	// --------------------
+
+	// ----- Attributs -----
+	std::vector<Actor> m_spawnedActors;
+	int m_mapSizeX, m_mapSizeY;
+
+	//std::string* bigGrid; // Grille large
+	// ---------------------
+	
 };

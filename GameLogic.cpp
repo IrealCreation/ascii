@@ -1,10 +1,12 @@
 #include "GameLogic.h"
-#include "Layout.h"
+
+
+
 
 // _getch() pour récupérer les inputs du joueur
 
 // ----- Constructeurs -----
-GameLogic::GameLogic()
+GameLogic::GameLogic() : m_mapSizeX(50), m_mapSizeY(50)
 {
 	initialisation();
 }
@@ -25,7 +27,7 @@ void GameLogic::initialisation()
 	cfi.dwFontSize.Y = 16;                  // Height
 	cfi.FontFamily = FF_DONTCARE;
 	cfi.FontWeight = FW_NORMAL;
-	std::wcscpy(cfi.FaceName, L"Verdana"); // Choose your font
+	wcscpy_s(cfi.FaceName, L"Verdana"); // Choose your font ---- wcscpy_s used insted of std::wcscpy -----
 	SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
 	// --------------------------------------------
 
@@ -71,6 +73,7 @@ void GameLogic::newGame()
 	//int c = 0;
 	//switch ((c=_getch())){...}
 	int cursorPosition = 0;
+	bool startGame = false;
 	while (1)
 	{
 		// ----- Sélection d'une action dans le menu principal -----
@@ -104,13 +107,15 @@ void GameLogic::newGame()
 			if (cursorPosition == 0)
 			{
 				// NEW GAME
-				//printf("new");
+				
+				startGame = true; // À améliorer ?
 				break;
 			}
 			else if (cursorPosition == 1)
 			{
 				// QUIT GAME
-				//printf("quit");
+				
+				startGame = false; // À améliorer ?
 				break;
 			}
 		}
@@ -130,7 +135,16 @@ void GameLogic::newGame()
 		}
 		// -----------------------------------------
 
-		MainMenu.refresh(); // Rafraichit la fenêtre
+		MainMenu.refresh(); // Rafraîchit la fenêtre
+
+		// ----- Début de la partie -----
+		if (startGame == true)
+		{
+			break;
+			// START NEW GAME
+		}
+		// ------------------------------
+
 	}
 	// --------------------------
 
@@ -144,3 +158,89 @@ void GameLogic::newGame()
 	// ------------------------------------
 }
 // --------------------
+
+// ----- Début du jeu/création de la fenêtre principale -----
+// Layout MainScreen();
+// ----------------------------------------------------------
+
+void GameLogic::setMap(Layout &Screen) // Définit les dimensions X et Y de la map du jeu.
+{
+	m_mapSizeX = Screen.get_sizeX() + 10;
+	m_mapSizeY = Screen.get_sizeY() + 10;
+}
+
+void GameLogic::addActor(Actor &element)
+{
+	m_spawnedActors.push_back(element); // Ajoute un élément dans le tableau des actors
+}
+
+void GameLogic::removeActor(int actorId)
+{
+	// if spwnActor size != de 0 ----- ID 0 = Joueur.
+	if (actorId != 0)
+	{
+		m_spawnedActors.at(actorId).~Actor();
+		m_spawnedActors.erase(m_spawnedActors.begin() + actorId); // Efface la case ciblée dans le tableau.
+		m_spawnedActors.shrink_to_fit(); // Redimensionne le tableau.
+	}
+}
+
+void GameLogic::setActorPositionOnScreen(int actorId, Layout &Screen)
+{
+	int x, y, color;
+	std::string visualAspect;
+
+	x = m_spawnedActors.at(actorId).getPositionX();
+	y = m_spawnedActors.at(actorId).getPositionY();
+	visualAspect = m_spawnedActors.at(actorId).getVisualAspect();
+	color = m_spawnedActors.at(actorId).getColor();
+
+	Screen.setGrid(x, y, visualAspect, color); // Positionner l'élément sur la grille de l'écran principal
+
+}
+//m_actors = new vector
+
+void GameLogic::scrolling()
+{
+	// ----- Scrolling en Y -----
+	for (int i(1), y(0); i < m_spawnedActors.size(); i++) // Pour chaque élément du tableau.
+	{
+		y = m_spawnedActors.at(i).getPositionY(); // Récupère la position y de l'élément.
+		
+		m_spawnedActors.at(i).setPositionY(1); // Déplace l'élément en y.
+//		m_spawnedActors.at(i).setPositionY(-1);
+		
+		if (y <= 0 || y >= m_mapSizeY) // Si l'actor est en dehors de la map.
+		{
+			removeActor(i); // Alors supprime l'actor.
+		}
+
+	}
+	// --------------------------
+}
+
+// ----- Spawn -----
+/// On crée un vector dans lequel on enregistre chaque actor de la map
+/// vector<type> NOM (TAILLE);
+/// ==================================
+/// == Display de l'actor à l'écran ==
+/// == pour chaque élément          ==
+/// ==================================
+/// 
+/// for (int i = 0; i < vector.getLength(); i++)
+/// {
+///		int x, y;
+///		std::string actorLetter;
+///		x = vector{i}.getPositionX;
+///		y = vector{i}.getPositionY;
+///		actorLetter = vector{i}.getVisualAspect;
+///		Layout.setGrid(x, y, actorLetter);		
+/// }
+/// Layout.refresh();
+// -----------------
+
+// ----- Scrolling de la map -----
+/// Scroll y
+/// 
+/// Scroll x
+// -------------------------------
