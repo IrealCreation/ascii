@@ -8,7 +8,7 @@ Character::~Character(){}
 // ------------------------------------
 
 
-void Character::Tick()
+void Character::tick()
 {
 	return;
 }

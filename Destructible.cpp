@@ -13,25 +13,25 @@ Destructible::~Destructible() {}
 /// </summary>
 /// <param name="damages"></param>
 /// <returns>True if the actor is destroyed, false otherwise.</returns>
-bool Destructible::ReceiveDamages(int damages) {
+bool Destructible::receiveDamages(int damages) {
 	m_health -= damages;
 	if (damages <= 0) {
-		Destroy();
+		destroy();
 		return true;
 	}
 	return false;
 }
 
 /// <summary>
-/// Destroy this destructible
+/// destroy this destructible
 /// </summary>
-void Destructible::Destroy() {
+void Destructible::destroy() {
 	//TODO: spawn loot?
 
 	//TODO: inform the GameLogic that I'm not here anymore.
 }
 
-void Destructible::CollideWith(Actor& collider)
+void Destructible::collideWith(Actor& collider)
 {
-	ReceiveDamages(collider.GetCollisionDamages());
+	receiveDamages(collider.getCollisionDamages());
 }

@@ -60,7 +60,7 @@ int main()
 	// Cr�ation de la fen�tre principale
 	fullScreen();
 	int const sizeX(35), sizeY(35);
-	Layout MainScreen(sizeX, sizeY, 39, 5);
+	Layout MainScreen(sizeX, sizeY, 1, 1);
 	MainScreen.createBorders("#");
 	MainScreen.setGrid(17, 17, "P"); // Position du joueur au centre
 	MainScreen.refresh();

@@ -13,7 +13,7 @@ Comet::~Comet() {}
 // ------------------------------------
 
 
-void Comet::Tick(float deltaTime)
+void Comet::tick(float deltaTime)
 {
 	// The amount of move available this turn
 	float move = deltaTime * m_speed + m_moveRemaining;
@@ -32,11 +32,11 @@ void Comet::Tick(float deltaTime)
 	{
 		newPosY += intMove * (m_direction) ? 1 : -1;
 	}
-	MoveTo(newPosX, newPosY);
+	moveTo(newPosX, newPosY);
 }
 
-void Comet::CollideWith(Actor& collider)
+void Comet::collideWith(Actor& collider)
 {
 	// The comet is immediately destroyed when collided
-	Destroy();
+	destroy();
 }

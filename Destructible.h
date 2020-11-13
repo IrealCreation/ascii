@@ -19,14 +19,14 @@ public:
 
 
 	// ----- Méthodes -----
-	bool ReceiveDamages(int damages);
-	void Destroy();
+	bool receiveDamages(int damages);
+	void destroy();
 
 	/// <summary>
 	/// What happens when I collide with another actor?
 	/// </summary>
 	/// <param name="collider">The actor I collide with</param>
-	void CollideWith(Actor& collider);
+	void collideWith(Actor& collider);
 	// --------------------
 
 

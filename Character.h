@@ -15,7 +15,7 @@ public:
 
 
 	// ----- Méthodes -----
-	void Tick();
+	void tick();
 	// --------------------
 
 

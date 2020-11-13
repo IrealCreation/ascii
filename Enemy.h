@@ -10,7 +10,7 @@ public:
 	~Enemy();
 	// ------------------------------------
 
-	void Tick(float deltaTime);
+	void tick(float deltaTime);
 
 protected:
 	std::string m_name;

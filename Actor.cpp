@@ -9,7 +9,7 @@ Actor::Actor(int x, int y, std::string visualAspect, int color) : m_positionX(x)
 Actor::~Actor(){}
 // ------------------------------------
 
-bool Actor::MoveTo(int x, int y) {
+bool Actor::moveTo(int x, int y) {
 	bool valid = true;
 
 	//TODO: implement GameLogic as following
@@ -22,7 +22,7 @@ bool Actor::MoveTo(int x, int y) {
 	return valid;
 }
 
-void Actor::CollideWith(Actor& collider)
+void Actor::collideWith(Actor& collider)
 {
 	return;
 }
@@ -31,12 +31,12 @@ std::string Actor::getVisualAspect() { return m_visualAspect; }
 
 int Actor::getColor() { return m_color; }
 
-int Actor::GetCollisionDamages() { return m_collisionDamages; }
+int Actor::getCollisionDamages() { return m_collisionDamages; }
 
-int Actor::GetPositionX() { return m_positionX; }
-int Actor::GetPositionY() { return m_positionY; }
-void Actor::SetPositionX(int x) { m_positionX = x; }
-void Actor::SetPositionY(int y) { m_positionY = y; }
+int Actor::getPositionX() { return m_positionX; }
+int Actor::getPositionY() { return m_positionY; }
+void Actor::setPositionX(int x) { m_positionX = x; }
+void Actor::setPositionY(int y) { m_positionY = y; }
 
 /* Actor& GameLogic::GetActorAt(int x, int y){}
 

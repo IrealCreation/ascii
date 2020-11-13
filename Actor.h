@@ -20,15 +20,15 @@ public:
 
   
   // ----- Get -----
-  int GetPositionX();
-	int GetPositionY();
+	int getPositionX();
+	int getPositionY();
 	std::string getVisualAspect();
 	int getColor();
 	// ---------------
   
   // ----- Set -----
-  void SetPositionX(int x);
-	void SetPositionY(int y);
+	void setPositionX(int x);
+	void setPositionY(int y);
   // ---------------
 
 	// ----- Méthodes -----
@@ -38,21 +38,21 @@ public:
 	/// <param name="x">X coordinate. If null, stay unchanged.</param>
 	/// <param name="y">Y coordinate. if null, stay unchanged.</param>
 	/// <returns>True if the move could be done, false otherwise</returns>
-	bool MoveTo(int x, int y);
+	bool moveTo(int x, int y);
 
 	/// <summary>
-	/// Tick should be called at each game update
+	/// tick should be called at each game update
 	/// </summary>
 	/// <param name="deltaTime">Time since last game update in seconds</param>
-	virtual void Tick(float deltaTime) = 0;
+	virtual void tick(float deltaTime) = 0;
 
 	/// <summary>
 	/// What happens when I collide with another actor?
 	/// </summary>
 	/// <param name="collider">The actor I collide with</param>
-	void CollideWith(Actor& collider);
+	void collideWith(Actor& collider);
 
-	int GetCollisionDamages();
+	int getCollisionDamages();
   
 	// --------------------
 

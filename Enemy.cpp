@@ -7,7 +7,7 @@ Enemy::~Enemy() {}
 // ------------------------------------
 
 
-void Enemy::Tick(float deltaTime)
+void Enemy::tick(float deltaTime)
 {
 	// Let's move towards the player character to shoot him / bump him
 
@@ -40,7 +40,7 @@ void Enemy::Tick(float deltaTime)
 				int direction = (targetX > m_positionX) ? 1 : -1;
 
 				// Make the move and check if it's successful
-				success = MoveTo(m_positionX + direction, m_positionX);
+				success = moveTo(m_positionX + direction, m_positionX);
 			}
 			else
 			{
@@ -49,7 +49,7 @@ void Enemy::Tick(float deltaTime)
 				int direction = (targetY > m_positionY) ? 1 : -1;
 
 				// Make the move and check if it's successful
-				success = MoveTo(m_positionY + direction, m_positionY);
+				success = moveTo(m_positionY + direction, m_positionY);
 			}
 		}
 
