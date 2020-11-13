@@ -171,7 +171,7 @@ void GameLogic::setMap(Layout &Screen) // Définit les dimensions X et Y de la ma
 
 void GameLogic::addActor(Actor &element)
 {
-	m_spawnedActors.push_back(element); // Ajoute un élément dans le tableau des actors
+	m_spawnedActors.push_back(&element); // Ajoute un élément dans le tableau des actors
 }
 
 void GameLogic::removeActor(int actorId)
@@ -179,7 +179,7 @@ void GameLogic::removeActor(int actorId)
 	// if spwnActor size != de 0 ----- ID 0 = Joueur.
 	if (actorId != 0)
 	{
-		m_spawnedActors.at(actorId).~Actor();
+		//m_spawnedActors.at(actorId).~Actor();
 		m_spawnedActors.erase(m_spawnedActors.begin() + actorId); // Efface la case ciblée dans le tableau.
 		m_spawnedActors.shrink_to_fit(); // Redimensionne le tableau.
 	}
@@ -190,10 +190,10 @@ void GameLogic::setActorPositionOnScreen(int actorId, Layout &Screen)
 	int x, y, color;
 	std::string visualAspect;
 
-	x = m_spawnedActors.at(actorId).getPositionX();
-	y = m_spawnedActors.at(actorId).getPositionY();
-	visualAspect = m_spawnedActors.at(actorId).getVisualAspect();
-	color = m_spawnedActors.at(actorId).getColor();
+	x = (*m_spawnedActors.at(actorId)).getPositionX();
+	y = (*m_spawnedActors.at(actorId)).getPositionY();
+	visualAspect = (*m_spawnedActors.at(actorId)).getVisualAspect();
+	color = (*m_spawnedActors.at(actorId)).getColor();
 
 	Screen.setGrid(x, y, visualAspect, color); // Positionner l'élément sur la grille de l'écran principal
 
@@ -205,9 +205,9 @@ void GameLogic::scrolling()
 	// ----- Scrolling en Y -----
 	for (int i(1), y(0); i < m_spawnedActors.size(); i++) // Pour chaque élément du tableau.
 	{
-		y = m_spawnedActors.at(i).getPositionY(); // Récupère la position y de l'élément.
+		y = (*m_spawnedActors.at(i)).getPositionY(); // Récupère la position y de l'élément.
 		
-		m_spawnedActors.at(i).setPositionY(1); // Déplace l'élément en y.
+		(*m_spawnedActors.at(i)).setPositionY(1); // Déplace l'élément en y.
 //		m_spawnedActors.at(i).setPositionY(-1);
 		
 		if (y <= 0 || y >= m_mapSizeY) // Si l'actor est en dehors de la map.

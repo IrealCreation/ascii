@@ -1,2 +1,4 @@
-﻿  main.cpp
+﻿  GameLogic.cpp
+C:\Users\SriKahn\Desktop\Projets jeux\ascii\GameLogic.cpp(9,83): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+C:\Users\SriKahn\Desktop\Projets jeux\ascii\GameLogic.cpp(206,25): warning C4018: '<' : incompatibilité signed/unsigned
   ascii.vcxproj -> C:\Users\SriKahn\Desktop\Projets jeux\ascii\Debug\ascii.exe

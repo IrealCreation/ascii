@@ -12,7 +12,7 @@ class Comet : public Destructible
 {
 public:
 	// ----- Constructeur/Destructeur -----
-	Comet(int x, int y, std::string direction, bool way, float speed);
+	Comet(int x, int y, std::string axis, bool way, float speed);
 
 	~Comet();
 	// ------------------------------------
