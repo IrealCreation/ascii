@@ -30,7 +30,7 @@ public:
 	/// <summary>
 	/// Tick should be called at each game update
 	/// </summary>
-	/// <param name="deltaTime">Time since last game update</param>
+	/// <param name="deltaTime">Time since last game update in seconds</param>
 	virtual void Tick(float deltaTime) = 0;
 
 	/// <summary>
@@ -40,6 +40,12 @@ public:
 	void CollideWith(Actor& collider);
 
 	int GetCollisionDamages();
+
+	int GetPositionX();
+	int GetPositionY();
+
+	void SetPositionX(int x);
+	void SetPositionY(int y);
 	// --------------------
 
 protected:
