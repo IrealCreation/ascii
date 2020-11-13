@@ -1,31 +1,29 @@
 #pragma once
 
 // ----- Headers -----
-#include "Actor.h"
+#include "Destructible.h"
 // -------------------
 
-// ----- Classe -----
-class Character : public Actor
+class Character : public Destructible
 {
 
 public:
-// ----- Constructeur/Destructeur -----
-Character();
-~Character();
-// ------------------------------------
+	// ----- Constructeur/Destructeur -----
+	Character(int x, int y, int health);
+	~Character();
+	// ------------------------------------
 
 
-// ----- Méthodes -----
-
-// --------------------
+	// ----- Méthodes -----
+	void Tick();
+	// --------------------
 
 
 protected:
-// ----- Attributs -----
+	// ----- Attributs -----
 
-// ---------------------
+	// ---------------------
 
 
 };
-// ------------------
 
