@@ -21,6 +21,12 @@ public:
 
 	// ----- Méthodes -----
 	void Tick(float deltaTime);
+
+	/// <summary>
+	/// What happens when I collide with another actor?
+	/// </summary>
+	/// <param name="collider">The actor I collide with</param>
+	void CollideWith(Actor& collider);
 	// --------------------
 
 protected:

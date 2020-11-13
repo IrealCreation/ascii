@@ -34,3 +34,9 @@ void Comet::Tick(float deltaTime)
 	}
 	MoveTo(newPosX, newPosY);
 }
+
+void Comet::CollideWith(Actor& collider)
+{
+	// The comet is immediately destroyed when collided
+	Destroy();
+}
