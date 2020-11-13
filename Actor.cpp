@@ -27,27 +27,16 @@ void Actor::CollideWith(Actor& collider)
 	return;
 }
 
-int Actor::GetCollisionDamages()
-{
-	return m_collisionDamages;
-}
+std::string Actor::getVisualAspect() { return m_visualAspect; }
 
-int Actor::GetPositionX()
-{
-	return m_positionX;
-}
-int Actor::GetPositionY()
-{
-	return m_positionY;
-}
-void Actor::SetPositionX(int x)
-{
-	m_positionX = x;
-}
-void Actor::SetPositionY(int y)
-{
-	m_positionY = y;
-}
+int Actor::getColor() { return m_color; }
+
+int Actor::GetCollisionDamages() { return m_collisionDamages; }
+
+int Actor::GetPositionX() { return m_positionX; }
+int Actor::GetPositionY() { return m_positionY; }
+void Actor::SetPositionX(int x) { m_positionX = x; }
+void Actor::SetPositionY(int y) { m_positionY = y; }
 
 /* Actor& GameLogic::GetActorAt(int x, int y){}
 

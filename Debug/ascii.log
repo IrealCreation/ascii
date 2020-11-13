@@ -1,0 +1,8 @@
+﻿  Actor.cpp
+  Character.cpp
+  GameLogic.cpp
+D:\Programing\ASCII (Asteroids - Space Constellations and Introverse Implications)\ascii\GameLogic.cpp(206,25): warning C4018: '<': signed/unsigned mismatch
+  Layout.cpp
+  main.cpp
+  Generating Code...
+  ascii.vcxproj -> D:\Programing\ASCII (Asteroids - Space Constellations and Introverse Implications)\ascii\Debug\ascii.exe

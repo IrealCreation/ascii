@@ -24,6 +24,8 @@ public:
 
 	void refresh();
 
+	int get_sizeX();
+	int get_sizeY();
 
 private:
 	void initGrid(); // Appelé dans le constructeur.
@@ -34,8 +36,7 @@ private:
 
 	int get_paddingX();
 	int get_paddingY();
-	int get_sizeX();
-	int get_sizeY();
+
 
 
 	void setCursorPosition(int x, int y);

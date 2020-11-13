@@ -11,12 +11,25 @@ class Actor
 {
 public:
 	// ----- Constructeur/Destructeur -----
+
 	Actor(int x, int y, std::string visualAspect);
 	Actor(int x, int y, std::string visualAspect, int color);
 
 	~Actor();
 	// ------------------------------------
 
+  
+  // ----- Get -----
+  int GetPositionX();
+	int GetPositionY();
+	std::string getVisualAspect();
+	int getColor();
+	// ---------------
+  
+  // ----- Set -----
+  void SetPositionX(int x);
+	void SetPositionY(int y);
+  // ---------------
 
 	// ----- Méthodes -----
 	/// <summary>
@@ -40,12 +53,7 @@ public:
 	void CollideWith(Actor& collider);
 
 	int GetCollisionDamages();
-
-	int GetPositionX();
-	int GetPositionY();
-
-	void SetPositionX(int x);
-	void SetPositionY(int y);
+  
 	// --------------------
 
 protected:
@@ -70,4 +78,3 @@ protected:
 	// ---------------------
 
 };
-
