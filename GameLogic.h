@@ -7,10 +7,13 @@
 
 #include <thread> // Contrôle du timing du jeu 
 #include <chrono>
+#include <time.h> // Utilisation de l'aléatoire.
 
 #include <vector>
 
 #include "Actor.h"
+#include "Character.h"
+#include "Comet.h"
 #include "Layout.h"
 // -------------------
 
@@ -34,9 +37,17 @@ public:
 	
 	void addActor(Actor &element);
 	void removeActor(int actorId);
+	
+	int getActorXPositionOnScreen(int actorId, Layout& Screen);
+	int getActorYPositionOnScreen(int actorId, Layout& Screen);
+	void removeAllActorsFromScreen(Layout &Screen);
+	
 	void setActorPositionOnScreen(int actorId, Layout &Screen);
 
 	void scrolling();
+
+	bool isLocationEmpty(int x, int y);
+	int getActorIdByLocation(int x, int y);
 
 
 
@@ -48,13 +59,15 @@ protected:
 private:
 	// ----- Méthodes -----
 	void initialisation();
+	void spawn();
 	// --------------------
 
 	// ----- Attributs -----
-	std::vector<Actor> m_spawnedActors;
-	int m_mapSizeX, m_mapSizeY;
+
+	std::vector<Actor*> m_spawnedActors;
+	
+	int m_mapSizeX, m_mapSizeY, m_hiddenPart; // Dimensions de la map
 	float m_timingMs, m_timingS; // Timing du jeu en ms et s / paramètre des fonctions tick des acteurs.
-	//std::string* bigGrid; // Grille large
 	// ---------------------
 	
 };

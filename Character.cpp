@@ -8,7 +8,7 @@ Character::~Character(){}
 // ------------------------------------
 
 
-void Character::tick()
+void Character::tick(float deltaTime)
 {
 	return;
 }

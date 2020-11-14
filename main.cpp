@@ -55,6 +55,15 @@ SetConsoleScreenBufferSize(handle, new_size);
 int main()
 {
 
+	// ----- D�but du jeu -----
+	 GameLogic Game;
+	 Game.newGame();
+	// ------------------------
+
+
+
+
+	/*
 	// ----- Test de spawn d'actors -----
 	
 	// Cr�ation de la fen�tre principale
@@ -104,11 +113,9 @@ int main()
 	MainScreen.refresh();
 
 	// ----------------------------------
+	*/
 
-	// ----- D�but du jeu -----
-	// GameLogic Game;
-	// Game.newGame();
-	// ------------------------
+
 
 
    //std::cout << "Hello, World!" << std::endl;

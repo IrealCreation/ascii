@@ -22,6 +22,8 @@ public:
 	bool receiveDamages(int damages);
 	void destroy();
 
+
+
 	/// <summary>
 	/// What happens when I collide with another actor?
 	/// </summary>
