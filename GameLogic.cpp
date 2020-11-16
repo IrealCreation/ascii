@@ -179,7 +179,7 @@ void GameLogic::removeActor(int actorId)
 	// if spwnActor size != de 0 ----- ID 0 = Joueur.
 	if (actorId != 0)
 	{
-		//m_spawnedActors.at(actorId).~Actor();
+		(*m_spawnedActors.at(actorId)).~Actor();
 		m_spawnedActors.erase(m_spawnedActors.begin() + actorId); // Efface la case ciblée dans le tableau.
 		m_spawnedActors.shrink_to_fit(); // Redimensionne le tableau.
 	}
