@@ -7,7 +7,9 @@
 
 #include <thread> // Contrôle du timing du jeu 
 #include <chrono>
+
 #include <time.h> // Utilisation de l'aléatoire.
+#include <random> 
 
 #include <vector>
 
@@ -44,10 +46,12 @@ public:
 	
 	void setActorPositionOnScreen(int actorId, Layout &Screen);
 
-	void scrolling();
+	void scrolling(std::string direction);
 
 	bool isLocationEmpty(int x, int y);
 	int getActorIdByLocation(int x, int y);
+
+	void inputs();
 
 
 

@@ -163,32 +163,44 @@ void GameLogic::newGame()
 	setActorPositionOnScreen(1, MainScreen);
 	MainScreen.refresh();
 
+	Layout SideScreen(20, 10, 5, 0, MainScreen, "X");
+	SideScreen.setGrid(5, 0, "- Debug -");
+	SideScreen.setGrid(5, 5, "Removed Actors:");
 
+	std::string actorsAmount;
+	int actorsRemoved = 0;
 
-
-	for (int j = 0; j < 50; j++)
+	for (int j = 0; j < 500; j++)
 	{
 		// ----- Efface l'ancienne position des acteurs -----
 		removeAllActorsFromScreen(MainScreen);
 		// --------------------------------------------------
-
+		inputs();
 		for (int i = 0; i < m_spawnedActors.size(); i++) // Pour chaque acteur présent.
 		{
 			(*m_spawnedActors.at(i)).tick(m_timingS); // Lance le tick de chaque acteur.
 
-			if ((*m_spawnedActors.at(i)).getPositionX() < 0 || (*m_spawnedActors.at(i)).getPositionX() > m_mapSizeX
-				|| (*m_spawnedActors.at(i)).getPositionY() < 0 || (*m_spawnedActors.at(i)).getPositionY() > m_mapSizeY) // Si l'acteur sort de la map.
+			if ((*m_spawnedActors.at(i)).getPositionX() < 0 || (*m_spawnedActors.at(i)).getPositionX() > m_mapSizeX || (*m_spawnedActors.at(i)).getPositionY() < 0 || (*m_spawnedActors.at(i)).getPositionY() > m_mapSizeY) // Si l'acteur sort de la map.
 			{
 				removeActor(i); // Supprime l'acteur.
+				actorsRemoved++;
+				SideScreen.setGrid(5, 6, std::to_string(actorsRemoved));
+				
 			}
 
 		}
-
+		spawn();
+		//scrolling("right");
+		
 		for (int i = 0; i < m_spawnedActors.size(); i++) // Place chaque acteur sur l'écran.
 		{
 			setActorPositionOnScreen(i, MainScreen);
 		}
 		MainScreen.refresh();
+
+		actorsAmount = std::to_string((int)m_spawnedActors.size());
+		SideScreen.setGrid(5, 4, actorsAmount);
+		SideScreen.refresh();
 		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
 	
@@ -203,10 +215,6 @@ void GameLogic::newGame()
 	// ------------------------------------
 }
 // --------------------
-
-// ----- Début du jeu/création de la fenêtre principale -----
-// Layout MainScreen();
-// ----------------------------------------------------------
 
 
 // ----- Set map || Test only -----
@@ -224,18 +232,15 @@ void GameLogic::addActor(Actor &element)
 }
 // ----------------------------------
 
-
+// ----- Unspawn an actor -----
 void GameLogic::removeActor(int actorId)
 {
-	// if spwnActor size != de 0 ----- ID 0 = Joueur.
 	if (actorId != 0)
 	{
-		//(*m_spawnedActors.at(actorId)).~Actor();
 		m_spawnedActors.erase(m_spawnedActors.begin() + actorId); // Efface la case ciblée dans le tableau.
-		m_spawnedActors.shrink_to_fit(); // Redimensionne le tableau.
 	}
 }
-
+// ----------------------------
 
 // ----- Get actors' positions on screen -----
 int GameLogic::getActorXPositionOnScreen(int actorId, Layout& Screen)
@@ -251,6 +256,7 @@ int GameLogic::getActorYPositionOnScreen(int actorId, Layout& Screen)
 // -------------------------------------------
 
 
+// ----- Remove the visual display of all actors / Used to refresh the screen -----
 void GameLogic::removeAllActorsFromScreen(Layout &Screen)
 {
 	int x = 0;
@@ -266,7 +272,7 @@ void GameLogic::removeAllActorsFromScreen(Layout &Screen)
 		}
 	}
 }
-
+// --------------------------------------------------------------------------------
 
 
 
@@ -286,53 +292,132 @@ void GameLogic::setActorPositionOnScreen(int actorId, Layout &Screen)
 	}
 }
 
-void GameLogic::scrolling()
-{
-	// ----- Scrolling en Y -----
-	for (int i(1), y(0); i < m_spawnedActors.size(); i++) // Pour chaque élément du tableau.
-	{
-		y = (*m_spawnedActors.at(i)).getPositionY(); // Récupère la position y de l'élément.
-		
-		(*m_spawnedActors.at(i)).setPositionY(((*m_spawnedActors.at(i)).getPositionY()) + 1); // Déplace l'élément vers le bas.
-//		m_spawnedActors.at(i).setPositionY(((*m_spawnedActors.at(i)).getPositionY()) - 1); // Déplace l'élément vers le haut.
-		
-		if (y <= 0 || y >= m_mapSizeY) // Si l'actor est en dehors de la map.
-		{
-			removeActor(i); // Alors supprime l'actor.
-		}
-
-	}
-	// --------------------------
-} 
 
 // ----- Spawn -----
 void GameLogic::spawn()
 {
-	int x, y;
-	int randomNb;
-
-	// ----- Initialisation de l'aléatoire ----
-	srand(time(NULL)); // Initialisation du seed de l'aléatoire.
+	int x(0), y(0);
 	
-	// -------------------------------------------
+	// ----- Utilisation de <random> -----
+	int rangeFrom(1), rangeTo(4);
 
-	// ----- Spawn des comètes sur les nouvelles cases crées en y -----
-	for (int i = 0; i < m_mapSizeY; i++) // Pour chaque case en y.
+	std::random_device rd; // obtain a random number from hardware
+	std::mt19937 gen(rd()); // seed the generator
+	std::uniform_int_distribution<int> distr(rangeFrom, rangeTo); // define the range
+
+	// -----------------------------------
+	if ((m_spawnedActors.size()) < 20)
 	{
-		randomNb = rand() % 100 + 1; // Nombre aléatoire entre 1 et 100.
-		if (randomNb < 20 && isLocationEmpty(0, i) == true)
+		if (distr(gen) == 1)
 		{
-			m_spawnedActors.push_back(new Comet(0, i, "y", 1, 1));
-		}					
+			rangeFrom = 0;
+			rangeTo = m_hiddenPart / 2;
+			std::uniform_int_distribution<int> distrX(rangeFrom, rangeTo);
+			x = distrX(gen);
+			rangeFrom = 0;
+			rangeTo = m_mapSizeY;
+			std::uniform_int_distribution<int> distrY(rangeFrom, rangeTo);
+			y = distrY(gen);
+
+			if (isLocationEmpty(x, y) == true)
+			{
+				m_spawnedActors.push_back(new Comet(x, y, "x", 0, 1));
+			}
+		}
+		else if (distr(gen) == 2)
+		{
+			rangeFrom = m_mapSizeX - (m_hiddenPart / 2);
+			rangeTo = m_mapSizeX;
+			std::uniform_int_distribution<int> distrX(rangeFrom, rangeTo);
+			x = distrX(gen);
+			rangeFrom = 0;
+			rangeTo = m_mapSizeY;
+			std::uniform_int_distribution<int> distrY(rangeFrom, rangeTo);
+			y = distrY(gen);
+			if (isLocationEmpty(x, y) == true)
+			{
+				m_spawnedActors.push_back(new Comet(x, y, "x", 1, 1));
+			}
+		}
+		else if (distr(gen) == 3)
+		{
+			rangeFrom = 0;
+			rangeTo = m_hiddenPart / 2;
+			std::uniform_int_distribution<int> distrY(rangeFrom, rangeTo);
+			y = distrY(gen);
+			rangeFrom = 0;
+			rangeTo = m_mapSizeX;
+			std::uniform_int_distribution<int> distrX(rangeFrom, rangeTo);
+			x = distrX(gen);
+			if (isLocationEmpty(x, y) == true)
+			{
+				m_spawnedActors.push_back(new Comet(x, y, "y", 0, 1));
+			}
+		}
+		else if (distr(gen) == 4)
+		{
+			rangeFrom = m_mapSizeY - (m_hiddenPart / 2);
+			rangeTo = m_mapSizeY;
+			std::uniform_int_distribution<int> distrY(rangeFrom, rangeTo);
+			y = distrY(gen);
+			rangeFrom = 0;
+			rangeTo = m_mapSizeX;
+			std::uniform_int_distribution<int> distrX(rangeFrom, rangeTo);
+			x = distrX(gen);
+			if (isLocationEmpty(x, y) == true)
+			{
+				m_spawnedActors.push_back(new Comet(x, y, "y", 1, 1));
+			}
+		}
 	}
-	// ----------------------------------------------------------------	
 }
-// -----------------
+// ----------------- 
+
+// ----- Inputs movements -----
+void GameLogic::inputs()
+{
+	BlockInput(false);
+	if (kbhit())
+	{
+		switch (_getch())
+		{
+		case KEY_UP:
+			for (int i = 1; i < m_spawnedActors.size(); i++)
+			{
+				(*m_spawnedActors.at(i)).setPositionY(((*m_spawnedActors.at(i)).getPositionY()) + 1);
+			}
+			break;
+		case KEY_LEFT:
+			for (int i = 1; i < m_spawnedActors.size(); i++)
+			{
+				(*m_spawnedActors.at(i)).setPositionX(((*m_spawnedActors.at(i)).getPositionX()) + 1);
+			}
+			break;
+		case KEY_RIGHT:
+			for (int i = 1; i < m_spawnedActors.size(); i++)
+			{
+				(*m_spawnedActors.at(i)).setPositionX(((*m_spawnedActors.at(i)).getPositionX()) - 1);
+			}
+			break;
+		case KEY_DOWN:
+			for (int i = 1; i < m_spawnedActors.size(); i++)
+			{
+				(*m_spawnedActors.at(i)).setPositionY(((*m_spawnedActors.at(i)).getPositionY()) - 1);
+			}
+			break;
+		default:
+			break;
+		}
+	}
+	BlockInput(true);
+}
+// ----------------------------
+
 
 // ----- Vérifie si un emplacement est vide -----
 bool GameLogic::isLocationEmpty(int x, int y)
 {
-	bool output = 1; // Emplacement vide par défaut.
+	bool output = true; // Emplacement vide par défaut.
 	int selectedX(x), selectedY(y); // Coordonnées x y qu'on souhaite vérifier.
 	int actorX(0), actorY(0); // Coordonnées des acteurs.
 
@@ -371,6 +456,8 @@ int GameLogic::getActorIdByLocation(int x, int y)
 	return id;
 }
 // --------------------------------------------------------------------
+
+
 
 // ----- Spawn -----
 /// On crée un vector dans lequel on enregistre chaque actor de la map
