@@ -16,8 +16,8 @@ bool Actor::moveTo(int x, int y) {
 	//Actor actorAtDestination = GameLogic.GetActorAt(x, y);
 
 	if (valid) {
-		m_positionX = (x != NULL) ? x : m_positionX;
-		m_positionY = (y != NULL) ? y : m_positionY;
+		m_positionX = x;
+		m_positionY = y;
 	}
 	return valid;
 }

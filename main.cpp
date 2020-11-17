@@ -55,6 +55,14 @@ SetConsoleScreenBufferSize(handle, new_size);
 int main()
 {
 
+	std::string testString;
+	int testInt = NULL;
+	std::cout << "Hello World, voici mon test :" << std::endl;
+	//std::cout << testString << std::endl;
+	std::cout << testInt << std::endl;
+	std::cout << "C'était chouette, non ?" << std::endl;
+	return 0;
+
 	// ----- Test de spawn d'actors -----
 	Comet comet(10, 10, 'x', true, 1);
 	comet.tick(1);
