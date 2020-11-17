@@ -35,39 +35,36 @@ public:
 	
 	void newGame();
 
-	void setMap(Layout& Sreen);
-	
-	void addActor(Actor &element);
-	void removeActor(int actorId);
-	
-	int getActorXPositionOnScreen(int actorId, Layout& Screen);
-	int getActorYPositionOnScreen(int actorId, Layout& Screen);
-	void removeAllActorsFromScreen(Layout &Screen);
-	
-	void setActorPositionOnScreen(int actorId, Layout &Screen);
-
-	void scrolling(std::string direction);
-
+	// Actors interactions
 	bool isLocationEmpty(int x, int y);
-	int getActorIdByLocation(int x, int y);
-
-	void inputs();
-
-
-
+	Actor& getActor(int x, int y);
+	void removeActor(Actor& actor);
 
 protected:
-
-
 
 private:
 	// ----- Méthodes -----
 	void initialisation();
+
+	void inputs();
+
+	// Spawn/Despawn
 	void spawn();
+	void removeActor(int actorId);
+
+	// Display
+	int getActorXPositionOnScreen(int actorId, Layout& Screen);
+	int getActorYPositionOnScreen(int actorId, Layout& Screen);
+	void removeAllActorsFromScreen(Layout& Screen);
+	void setActorPositionOnScreen(int actorId, Layout& Screen);
+
+	// Game information
+	int getActorIdByLocation(int x, int y);
+	Actor& getActor(int actorId);
 	// --------------------
 
-	// ----- Attributs -----
 
+	// ----- Attributs -----
 	std::vector<Actor*> m_spawnedActors;
 	
 	int m_mapSizeX, m_mapSizeY, m_hiddenPart; // Dimensions de la map

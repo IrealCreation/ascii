@@ -16,42 +16,6 @@ GameLogic::GameLogic() : m_mapSizeX(55), m_mapSizeY(55), m_hiddenPart(20), m_tim
 GameLogic::~GameLogic(){}
 // ------------------------
 
-// ----- Initialisation -----
-void GameLogic::initialisation()
-{
-	// ----- Gestion de la police d'écriture -----
-	CONSOLE_FONT_INFOEX cfi;
-	cfi.cbSize = sizeof(cfi);
-	cfi.nFont = 0;
-	cfi.dwFontSize.X = 16;                  // Width of each character in the font
-	cfi.dwFontSize.Y = 16;                  // Height
-	cfi.FontFamily = FF_DONTCARE;
-	cfi.FontWeight = FW_NORMAL;
-	wcscpy_s(cfi.FaceName, L"Verdana"); // Choose your font ---- wcscpy_s used insted of std::wcscpy -----
-	SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
-	// --------------------------------------------
-
-	// ----- Affiche en plein écran -----
-	ShowWindow(GetConsoleWindow(), SW_MAXIMIZE);
-	// ----------------------------------
-
-	// ----- Cache la barre de titre -----
-	SendMessage(GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000);
-	// -----------------------------------
-
-	// ----- Supprime la barre de défilement verticale -----
-	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
-	CONSOLE_SCREEN_BUFFER_INFO info;
-	GetConsoleScreenBufferInfo(handle, &info);
-	COORD new_size =
-	{
-		info.srWindow.Right - info.srWindow.Left + 1,
-		info.srWindow.Bottom - info.srWindow.Top + 1
-	};
-	SetConsoleScreenBufferSize(handle, new_size);
-	// -----------------------------------------------------
-}
-// --------------------------
 
 // ----- New Game -----
 void GameLogic::newGame()
@@ -217,87 +181,132 @@ void GameLogic::newGame()
 // --------------------
 
 
-// ----- Set map || Test only -----
-void GameLogic::setMap(Layout &Screen) // Définit les dimensions X et Y de la map du jeu.
-{
-	m_mapSizeX = Screen.get_sizeX() + 10;
-	m_mapSizeY = Screen.get_sizeY() + 10;
-}
-// --------------------------------
 
-// ----- Add actor || Test only -----
-void GameLogic::addActor(Actor &element)
+// ----- Vérifie si un emplacement est vide -----
+bool GameLogic::isLocationEmpty(int x, int y)
 {
-	m_spawnedActors.push_back(&element); // Ajoute un élément dans le tableau des actors
-}
-// ----------------------------------
+	bool output = true; // Emplacement vide par défaut.
+	int selectedX(x), selectedY(y); // Coordonnées x y qu'on souhaite vérifier.
+	int actorX(0), actorY(0); // Coordonnées des acteurs.
 
-// ----- Unspawn an actor -----
-void GameLogic::removeActor(int actorId)
-{
-	if (actorId != 0)
+	for (int i = 0; i < m_spawnedActors.size(); i++) // Vérification de la position de chaque acteur de la boucle.
 	{
-		m_spawnedActors.erase(m_spawnedActors.begin() + actorId); // Efface la case ciblée dans le tableau.
+		actorX = (*m_spawnedActors.at(i)).getPositionX();
+		actorY = (*m_spawnedActors.at(i)).getPositionY();
+		if (actorX == selectedX && actorY == selectedY) // Si les coordonnées correspondent à celle d'un acteur
+		{
+			output = false; // alors l'emplacement n'est pas vide.
+		}
 	}
-}
-// ----------------------------
 
-// ----- Get actors' positions on screen -----
-int GameLogic::getActorXPositionOnScreen(int actorId, Layout& Screen)
-{
-	int x = (*m_spawnedActors.at(actorId)).getPositionX() - (m_hiddenPart / 2);
-	return x;
+	return output;
 }
-int GameLogic::getActorYPositionOnScreen(int actorId, Layout& Screen)
+// ----------------------------------------------
+
+// ----- Get Actor from list by location -----
+Actor& GameLogic::getActor(int x, int y)
 {
-	int y = (*m_spawnedActors.at(actorId)).getPositionY() - (m_hiddenPart / 2);
-	return y;
+	int actorId = getActorIdByLocation(x, y);
+	return (*m_spawnedActors.at(actorId));
 }
 // -------------------------------------------
 
-
-// ----- Remove the visual display of all actors / Used to refresh the screen -----
-void GameLogic::removeAllActorsFromScreen(Layout &Screen)
+// ----- Unspawn an actor by reference -----
+void GameLogic::removeActor(Actor& actor)
 {
-	int x = 0;
-	int y = 0; 
+	int x = actor.getPositionX(), y = actor.getPositionY();
+	int ID = getActorIdByLocation(x, y);
+	removeActor(ID);
+}
+// -----------------------------------------
 
-	for (int i = 1; i < m_spawnedActors.size(); i++)
+
+
+// ----- Initialisation -----
+void GameLogic::initialisation()
+{
+	// ----- Gestion de la police d'écriture -----
+	CONSOLE_FONT_INFOEX cfi;
+	cfi.cbSize = sizeof(cfi);
+	cfi.nFont = 0;
+	cfi.dwFontSize.X = 16;                  // Width of each character in the font
+	cfi.dwFontSize.Y = 16;                  // Height
+	cfi.FontFamily = FF_DONTCARE;
+	cfi.FontWeight = FW_NORMAL;
+	wcscpy_s(cfi.FaceName, L"Verdana"); // Choose your font ---- wcscpy_s used insted of std::wcscpy -----
+	SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
+	// --------------------------------------------
+
+	// ----- Affiche en plein écran -----
+	ShowWindow(GetConsoleWindow(), SW_MAXIMIZE);
+	// ----------------------------------
+
+	// ----- Cache la barre de titre -----
+	SendMessage(GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000);
+	// -----------------------------------
+
+	// ----- Supprime la barre de défilement verticale -----
+	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_SCREEN_BUFFER_INFO info;
+	GetConsoleScreenBufferInfo(handle, &info);
+	COORD new_size =
 	{
-		x = (*m_spawnedActors.at(i)).getPositionX();
-		y = (*m_spawnedActors.at(i)).getPositionY();
-		if (x < m_mapSizeX - (m_hiddenPart / 2) && x >= (m_hiddenPart / 2) && y < m_mapSizeY - (m_hiddenPart / 2) && y >= (m_hiddenPart / 2))
+		info.srWindow.Right - info.srWindow.Left + 1,
+		info.srWindow.Bottom - info.srWindow.Top + 1
+	};
+	SetConsoleScreenBufferSize(handle, new_size);
+	// -----------------------------------------------------
+}
+// --------------------------
+
+
+// ----- Inputs movements -----
+void GameLogic::inputs()
+{
+	BlockInput(false);
+	if (kbhit())
+	{
+		switch (_getch())
 		{
-			Screen.setGrid(getActorXPositionOnScreen(i, Screen), getActorYPositionOnScreen(i, Screen), " "); // Place un vide à chaque acteur (sauf joueur).
+		case KEY_UP:
+			for (int i = 1; i < m_spawnedActors.size(); i++)
+			{
+				(*m_spawnedActors.at(i)).setPositionY(((*m_spawnedActors.at(i)).getPositionY()) + 1);
+			}
+			break;
+		case KEY_LEFT:
+			for (int i = 1; i < m_spawnedActors.size(); i++)
+			{
+				(*m_spawnedActors.at(i)).setPositionX(((*m_spawnedActors.at(i)).getPositionX()) + 1);
+			}
+			break;
+		case KEY_RIGHT:
+			for (int i = 1; i < m_spawnedActors.size(); i++)
+			{
+				(*m_spawnedActors.at(i)).setPositionX(((*m_spawnedActors.at(i)).getPositionX()) - 1);
+			}
+			break;
+		case KEY_DOWN:
+			for (int i = 1; i < m_spawnedActors.size(); i++)
+			{
+				(*m_spawnedActors.at(i)).setPositionY(((*m_spawnedActors.at(i)).getPositionY()) - 1);
+			}
+			break;
+		default:
+			break;
 		}
 	}
+	BlockInput(true);
 }
-// --------------------------------------------------------------------------------
+// ----------------------------
 
-
-
-void GameLogic::setActorPositionOnScreen(int actorId, Layout &Screen)
-{	
-	int x(7), y(5), color(2);
-	std::string aspect = "v";
-
-	x = (*m_spawnedActors.at(actorId)).getPositionX();
-	y = (*m_spawnedActors.at(actorId)).getPositionY();
-	color = (*m_spawnedActors.at(actorId)).getColor();
-	aspect = (*m_spawnedActors.at(actorId)).getVisualAspect();
-
-	if (x < m_mapSizeX - (m_hiddenPart / 2) && x >= (m_hiddenPart / 2) && y < m_mapSizeY - (m_hiddenPart / 2) && y >= (m_hiddenPart / 2))
-	{
-		Screen.setGrid(x - (m_hiddenPart / 2), y - (m_hiddenPart / 2), aspect, color); // Positionner l'élément sur la grille de l'écran principal
-	}
-}
 
 
 // ----- Spawn -----
 void GameLogic::spawn()
 {
 	int x(0), y(0);
-	
+
 	// ----- Utilisation de <random> -----
 	int rangeFrom(1), rangeTo(4);
 
@@ -373,67 +382,67 @@ void GameLogic::spawn()
 }
 // ----------------- 
 
-// ----- Inputs movements -----
-void GameLogic::inputs()
+// ----- Unspawn an actor -----
+void GameLogic::removeActor(int actorId)
 {
-	BlockInput(false);
-	if (kbhit())
+	if (actorId != 0)
 	{
-		switch (_getch())
-		{
-		case KEY_UP:
-			for (int i = 1; i < m_spawnedActors.size(); i++)
-			{
-				(*m_spawnedActors.at(i)).setPositionY(((*m_spawnedActors.at(i)).getPositionY()) + 1);
-			}
-			break;
-		case KEY_LEFT:
-			for (int i = 1; i < m_spawnedActors.size(); i++)
-			{
-				(*m_spawnedActors.at(i)).setPositionX(((*m_spawnedActors.at(i)).getPositionX()) + 1);
-			}
-			break;
-		case KEY_RIGHT:
-			for (int i = 1; i < m_spawnedActors.size(); i++)
-			{
-				(*m_spawnedActors.at(i)).setPositionX(((*m_spawnedActors.at(i)).getPositionX()) - 1);
-			}
-			break;
-		case KEY_DOWN:
-			for (int i = 1; i < m_spawnedActors.size(); i++)
-			{
-				(*m_spawnedActors.at(i)).setPositionY(((*m_spawnedActors.at(i)).getPositionY()) - 1);
-			}
-			break;
-		default:
-			break;
-		}
+		m_spawnedActors.erase(m_spawnedActors.begin() + actorId); // Efface la case ciblée dans le tableau.
 	}
-	BlockInput(true);
 }
 // ----------------------------
 
 
-// ----- Vérifie si un emplacement est vide -----
-bool GameLogic::isLocationEmpty(int x, int y)
-{
-	bool output = true; // Emplacement vide par défaut.
-	int selectedX(x), selectedY(y); // Coordonnées x y qu'on souhaite vérifier.
-	int actorX(0), actorY(0); // Coordonnées des acteurs.
 
-	for (int i = 0; i < m_spawnedActors.size(); i++) // Vérification de la position de chaque acteur de la boucle.
+// ----- Get actors' positions on screen -----
+int GameLogic::getActorXPositionOnScreen(int actorId, Layout& Screen)
+{
+	int x = (*m_spawnedActors.at(actorId)).getPositionX() - (m_hiddenPart / 2);
+	return x;
+}
+int GameLogic::getActorYPositionOnScreen(int actorId, Layout& Screen)
+{
+	int y = (*m_spawnedActors.at(actorId)).getPositionY() - (m_hiddenPart / 2);
+	return y;
+}
+// -------------------------------------------
+
+// ----- Remove the visual display of all actors / Used to refresh the screen -----
+void GameLogic::removeAllActorsFromScreen(Layout &Screen)
+{
+	int x = 0;
+	int y = 0; 
+
+	for (int i = 1; i < m_spawnedActors.size(); i++)
 	{
-		actorX = (*m_spawnedActors.at(i)).getPositionX();
-		actorY = (*m_spawnedActors.at(i)).getPositionY();
-		if (actorX == selectedX && actorY == selectedY) // Si les coordonnées correspondent à celle d'un acteur
+		x = (*m_spawnedActors.at(i)).getPositionX();
+		y = (*m_spawnedActors.at(i)).getPositionY();
+		if (x < m_mapSizeX - (m_hiddenPart / 2) && x >= (m_hiddenPart / 2) && y < m_mapSizeY - (m_hiddenPart / 2) && y >= (m_hiddenPart / 2))
 		{
-			output = false; // alors l'emplacement n'est pas vide.
+			Screen.setGrid(getActorXPositionOnScreen(i, Screen), getActorYPositionOnScreen(i, Screen), " "); // Place un vide à chaque acteur (sauf joueur).
 		}
 	}
-
-	return output;
 }
-// ----------------------------------------------
+// --------------------------------------------------------------------------------
+
+// ----- Translate actors' locations on map to screen location -----
+void GameLogic::setActorPositionOnScreen(int actorId, Layout &Screen)
+{	
+	int x(7), y(5), color(2);
+	std::string aspect = "v";
+
+	x = (*m_spawnedActors.at(actorId)).getPositionX();
+	y = (*m_spawnedActors.at(actorId)).getPositionY();
+	color = (*m_spawnedActors.at(actorId)).getColor();
+	aspect = (*m_spawnedActors.at(actorId)).getVisualAspect();
+
+	if (x < m_mapSizeX - (m_hiddenPart / 2) && x >= (m_hiddenPart / 2) && y < m_mapSizeY - (m_hiddenPart / 2) && y >= (m_hiddenPart / 2))
+	{
+		Screen.setGrid(x - (m_hiddenPart / 2), y - (m_hiddenPart / 2), aspect, color); // Positionner l'élément sur la grille de l'écran principal
+	}
+}
+// -----------------------------------------------------------------
+
 
 
 // ----- Récupère l'ID d'un acteur à partir de sa position x et y -----
@@ -457,34 +466,12 @@ int GameLogic::getActorIdByLocation(int x, int y)
 }
 // --------------------------------------------------------------------
 
-
-
-// ----- Spawn -----
-/// On crée un vector dans lequel on enregistre chaque actor de la map
-/// vector<type> NOM (TAILLE);
-/// ==================================
-/// == Display de l'actor à l'écran ==
-/// == pour chaque élément          ==
-/// ==================================
-/// 
-/// for (int i = 0; i < vector.getLength(); i++)
-/// {
-///		int x, y;
-///		std::string actorLetter;
-///		x = vector{i}.getPositionX;
-///		y = vector{i}.getPositionY;
-///		actorLetter = vector{i}.getVisualAspect;
-///		Layout.setGrid(x, y, actorLetter);		
-/// }
-/// Layout.refresh();
-// -----------------
-
-// ----- Scrolling de la map -----
-/// Scroll y
-/// 
-/// Scroll x
-// -------------------------------
-
+// ----- Get Actor from list by ID -----
+Actor& GameLogic::getActor(int actorId)
+{
+	return (*m_spawnedActors.at(actorId));
+}
+// -------------------------------------
 
 
 
@@ -503,5 +490,5 @@ int GameLogic::getActorIdByLocation(int x, int y)
 /// - Check initial actors' positions
 /// - Move actors
 /// - Check new actors' positions
-///3- make sure they are inside the screen and display actors on screen
+/// - make sure they are inside the screen and display actors on screen
 // ------------------------------
