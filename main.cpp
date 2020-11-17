@@ -56,6 +56,8 @@ int main()
 {
 
 	// ----- Test de spawn d'actors -----
+	Comet comet(10, 10, 'x', true, 1);
+	comet.tick(1);
 	
 	// Cr�ation de la fen�tre principale
 	fullScreen();
