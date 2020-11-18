@@ -1,5 +1,7 @@
 #include "Comet.h"
 
+
+
 // ----- Constructeur/Destructeur -----
 Comet::Comet(int x, int y, std::string direction, bool way, float speed) : Destructible(x, y, 10, "c")
 {
@@ -19,19 +21,40 @@ void Comet::tick(float deltaTime)
 	float move = deltaTime * m_speed + m_moveRemaining;
 
 	// Let's get the integer part of the move to see what movement is actually performed this tick, and put the rest in moveRemaining
-	int intMove = modff(move, &m_moveRemaining);
+	float intMove = 0;
+	m_moveRemaining = modff(move, &intMove);
 
 	// Perform the move in the programmed direction
 	int newPosX = m_positionX;
 	int newPosY = m_positionY;
+	int orientation = 0;
+	/*if (m_axis == "x" && m_direction == true)
+	{
+		newPosX += intMove;
+	}
+	else if (m_axis == "x" && m_direction == false)
+	{
+		newPosX += intMove * (-1);
+	}
+	else if (m_axis == "y" && m_direction == true)
+	{
+		newPosY += intMove;
+	}
+	else if (m_axis == "y" && m_direction == false)
+	{
+		newPosY += intMove * (-1);
+	}*/
 	if(m_axis == "x")
 	{
-		newPosX += intMove * (m_direction) ? 1 : -1;
+		orientation = (m_direction) ? 1 : -1;
+		newPosX += intMove * orientation;
 	}
 	else
 	{
-		newPosY += intMove * (m_direction) ? 1 : -1;
+		orientation = (m_direction) ? 1 : -1;
+		newPosY += intMove * orientation;
 	}
+
 	moveTo(newPosX, newPosY);
 }
 

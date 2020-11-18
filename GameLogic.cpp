@@ -139,7 +139,7 @@ void GameLogic::newGame()
 		// ----- Efface l'ancienne position des acteurs -----
 		removeAllActorsFromScreen(MainScreen);
 		// --------------------------------------------------
-		inputs();
+	
 		for (int i = 0; i < m_spawnedActors.size(); i++) // Pour chaque acteur présent.
 		{
 			(*m_spawnedActors.at(i)).tick(m_timingS); // Lance le tick de chaque acteur.
@@ -154,8 +154,8 @@ void GameLogic::newGame()
 
 		}
 		spawn();
-		//scrolling("right");
-		
+		inputs();
+
 		for (int i = 0; i < m_spawnedActors.size(); i++) // Place chaque acteur sur l'écran.
 		{
 			setActorPositionOnScreen(i, MainScreen);
@@ -165,7 +165,7 @@ void GameLogic::newGame()
 		actorsAmount = std::to_string((int)m_spawnedActors.size());
 		SideScreen.setGrid(5, 4, actorsAmount);
 		SideScreen.refresh();
-		std::this_thread::sleep_for(std::chrono::milliseconds(50));
+		std::this_thread::sleep_for(std::chrono::milliseconds((long)m_timingMs));
 	}
 	
 	// ---------------------------------------------
@@ -315,9 +315,9 @@ void GameLogic::spawn()
 	std::uniform_int_distribution<int> distr(rangeFrom, rangeTo); // define the range
 
 	// -----------------------------------
-	if ((m_spawnedActors.size()) < 20)
+	if ((m_spawnedActors.size()) < 20) 
 	{
-		if (distr(gen) == 1)
+		if (distr(gen) == 1) // Spawn à gauche.
 		{
 			rangeFrom = 0;
 			rangeTo = m_hiddenPart / 2;
@@ -330,10 +330,10 @@ void GameLogic::spawn()
 
 			if (isLocationEmpty(x, y) == true)
 			{
-				m_spawnedActors.push_back(new Comet(x, y, "x", 0, 1));
+				m_spawnedActors.push_back(new Comet(x, y, "x", 1, 10));
 			}
 		}
-		else if (distr(gen) == 2)
+		else if (distr(gen) == 2) // Spawn à droite.
 		{
 			rangeFrom = m_mapSizeX - (m_hiddenPart / 2);
 			rangeTo = m_mapSizeX;
@@ -345,10 +345,10 @@ void GameLogic::spawn()
 			y = distrY(gen);
 			if (isLocationEmpty(x, y) == true)
 			{
-				m_spawnedActors.push_back(new Comet(x, y, "x", 1, 1));
+				m_spawnedActors.push_back(new Comet(x, y, "x", 0, 1));
 			}
 		}
-		else if (distr(gen) == 3)
+		else if (distr(gen) == 3) // Spawn en haut.
 		{
 			rangeFrom = 0;
 			rangeTo = m_hiddenPart / 2;
@@ -360,10 +360,10 @@ void GameLogic::spawn()
 			x = distrX(gen);
 			if (isLocationEmpty(x, y) == true)
 			{
-				m_spawnedActors.push_back(new Comet(x, y, "y", 0, 1));
+				m_spawnedActors.push_back(new Comet(x, y, "y", 1, 1));
 			}
 		}
-		else if (distr(gen) == 4)
+		else if (distr(gen) == 4) // Spawn en bas.
 		{
 			rangeFrom = m_mapSizeY - (m_hiddenPart / 2);
 			rangeTo = m_mapSizeY;
@@ -375,7 +375,7 @@ void GameLogic::spawn()
 			x = distrX(gen);
 			if (isLocationEmpty(x, y) == true)
 			{
-				m_spawnedActors.push_back(new Comet(x, y, "y", 1, 1));
+				m_spawnedActors.push_back(new Comet(x, y, "y", 0, 1));
 			}
 		}
 	}
