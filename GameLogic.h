@@ -40,6 +40,8 @@ public:
 	Actor& getActor(int x, int y);
 	void removeActor(Actor& actor);
 
+	void spawn(Actor *actor);
+
 protected:
 
 private:

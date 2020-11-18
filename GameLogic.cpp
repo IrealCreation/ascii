@@ -116,10 +116,9 @@ void GameLogic::newGame()
 	// --------------------------
 
 	// ----- Création de la fenêtre principale -----
-	m_spawnedActors.push_back(new Character((m_mapSizeX / 2), (m_mapSizeY / 2), 100)); // Création du personnage principal au centre de l'écran
-	m_spawnedActors.push_back(new Comet(45, 15, "x", 1, 1)); // Création d'une comète
-	m_spawnedActors.push_back(new Comet(27, 18, "y", 1, 1)); // Création d'une comète
-	m_spawnedActors.push_back(new Comet(50, 16, "x", 1, 2)); // Création d'une comète
+	spawn(new Character((m_mapSizeX / 2), (m_mapSizeY / 2), 100)); // Création du personnage principal au centre de l'écran
+	spawn(new Comet(30, 16, "x", 1, 1.7));
+
 
 	Layout MainScreen((m_mapSizeX - m_hiddenPart), (m_mapSizeY - m_hiddenPart), 1, 1);
 	MainScreen.createBorders("#");
@@ -220,7 +219,12 @@ void GameLogic::removeActor(Actor& actor)
 }
 // -----------------------------------------
 
-
+// ----- Spawn for debug -----
+void GameLogic::spawn(Actor *actor)
+{
+	m_spawnedActors.push_back(actor);
+}
+// ---------------------------
 
 // ----- Initialisation -----
 void GameLogic::initialisation()
@@ -492,3 +496,6 @@ Actor& GameLogic::getActor(int actorId)
 /// - Check new actors' positions
 /// - make sure they are inside the screen and display actors on screen
 // ------------------------------
+// ----- TO DO -----
+/// - Player's speed
+// -----------------
