@@ -6,7 +6,7 @@
 // _getch() pour récupérer les inputs du joueur
 
 // ----- Constructeurs -----
-GameLogic::GameLogic() : m_mapSizeX(55), m_mapSizeY(55), m_hiddenPart(20), m_timingMs(50), m_timingS(m_timingMs / 1000.00)
+GameLogic::GameLogic() : m_mapSizeX(55), m_mapSizeY(55), m_hiddenPart(20), m_timingMs(50), m_timingS(m_timingMs / (float)1000.00)
 {
 	initialisation();
 }
@@ -117,7 +117,7 @@ void GameLogic::newGame()
 
 	// ----- Création de la fenêtre principale -----
 	spawn(new Character((m_mapSizeX / 2), (m_mapSizeY / 2), 100)); // Création du personnage principal au centre de l'écran
-	spawn(new Comet(30, 16, "x", 1, 1.7));
+	spawn(new Comet(30, 16, "x", 1, (float)1.7));
 
 
 	Layout MainScreen((m_mapSizeX - m_hiddenPart), (m_mapSizeY - m_hiddenPart), 1, 1);
@@ -139,7 +139,7 @@ void GameLogic::newGame()
 		removeAllActorsFromScreen(MainScreen);
 		// --------------------------------------------------
 	
-		for (int i = 0; i < m_spawnedActors.size(); i++) // Pour chaque acteur présent.
+		for (std::size_t i = 0; i < m_spawnedActors.size(); i++) // Pour chaque acteur présent.
 		{
 			(*m_spawnedActors.at(i)).tick(m_timingS); // Lance le tick de chaque acteur.
 
@@ -155,7 +155,7 @@ void GameLogic::newGame()
 		spawn();
 		inputs();
 
-		for (int i = 0; i < m_spawnedActors.size(); i++) // Place chaque acteur sur l'écran.
+		for (std::size_t i = 0; i < m_spawnedActors.size(); i++) // Place chaque acteur sur l'écran.
 		{
 			setActorPositionOnScreen(i, MainScreen);
 		}
@@ -188,7 +188,7 @@ bool GameLogic::isLocationEmpty(int x, int y)
 	int selectedX(x), selectedY(y); // Coordonnées x y qu'on souhaite vérifier.
 	int actorX(0), actorY(0); // Coordonnées des acteurs.
 
-	for (int i = 0; i < m_spawnedActors.size(); i++) // Vérification de la position de chaque acteur de la boucle.
+	for (std::size_t i = 0; i < m_spawnedActors.size(); i++) // Vérification de la position de chaque acteur de la boucle.
 	{
 		actorX = (*m_spawnedActors.at(i)).getPositionX();
 		actorY = (*m_spawnedActors.at(i)).getPositionY();
@@ -268,30 +268,30 @@ void GameLogic::initialisation()
 void GameLogic::inputs()
 {
 	BlockInput(false);
-	if (kbhit())
+	if (_kbhit()) // Check if a key is pressed.
 	{
 		switch (_getch())
 		{
 		case KEY_UP:
-			for (int i = 1; i < m_spawnedActors.size(); i++)
+			for (std::size_t i = 1; i < m_spawnedActors.size(); i++)
 			{
 				(*m_spawnedActors.at(i)).setPositionY(((*m_spawnedActors.at(i)).getPositionY()) + 1);
 			}
 			break;
 		case KEY_LEFT:
-			for (int i = 1; i < m_spawnedActors.size(); i++)
+			for (std::size_t i = 1; i < m_spawnedActors.size(); i++)
 			{
 				(*m_spawnedActors.at(i)).setPositionX(((*m_spawnedActors.at(i)).getPositionX()) + 1);
 			}
 			break;
 		case KEY_RIGHT:
-			for (int i = 1; i < m_spawnedActors.size(); i++)
+			for (std::size_t i = 1; i < m_spawnedActors.size(); i++)
 			{
 				(*m_spawnedActors.at(i)).setPositionX(((*m_spawnedActors.at(i)).getPositionX()) - 1);
 			}
 			break;
 		case KEY_DOWN:
-			for (int i = 1; i < m_spawnedActors.size(); i++)
+			for (std::size_t i = 1; i < m_spawnedActors.size(); i++)
 			{
 				(*m_spawnedActors.at(i)).setPositionY(((*m_spawnedActors.at(i)).getPositionY()) - 1);
 			}
@@ -417,7 +417,7 @@ void GameLogic::removeAllActorsFromScreen(Layout &Screen)
 	int x = 0;
 	int y = 0; 
 
-	for (int i = 1; i < m_spawnedActors.size(); i++)
+	for (std::size_t i = 1; i < m_spawnedActors.size(); i++)
 	{
 		x = (*m_spawnedActors.at(i)).getPositionX();
 		y = (*m_spawnedActors.at(i)).getPositionY();
@@ -457,7 +457,7 @@ int GameLogic::getActorIdByLocation(int x, int y)
 	int id(0);
 	int actorX(0), actorY(0);
 
-	for (int i = 0; i < m_spawnedActors.size(); i++) // Vérification de la position de chaque acteur de la boucle.
+	for (std::size_t i = 0; i < m_spawnedActors.size(); i++) // Vérification de la position de chaque acteur de la boucle.
 	{
 		actorX = (*m_spawnedActors.at(i)).getPositionX();
 		actorY = (*m_spawnedActors.at(i)).getPositionY();
