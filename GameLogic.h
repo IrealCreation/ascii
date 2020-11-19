@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "Actor.h"
+#include "Character.h"
 #include "Layout.h"
 // -------------------
 
@@ -37,8 +38,6 @@ public:
 	void setActorPositionOnScreen(int actorId, Layout &Screen);
 
 	void scrolling();
-
-
 
 
 protected:
