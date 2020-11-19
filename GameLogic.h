@@ -8,9 +8,14 @@
 #include <thread> // Contrôle du timing du jeu 
 #include <chrono>
 
+#include <time.h> // Utilisation de l'aléatoire.
+#include <random> 
+
 #include <vector>
 
 #include "Actor.h"
+#include "Character.h"
+#include "Comet.h"
 #include "Layout.h"
 // -------------------
 
@@ -30,31 +35,44 @@ public:
 	
 	void newGame();
 
-	void setMap(Layout& Sreen);
-	
-	void addActor(Actor &element);
-	void removeActor(int actorId);
-	void setActorPositionOnScreen(int actorId, Layout &Screen);
+	// Actors interactions
+	bool isLocationEmpty(int x, int y);
+	Actor& getActor(int x, int y);
+	void removeActor(Actor& actor);
 
-	void scrolling();
-
-
-
+	void spawn(Actor *actor);
 
 protected:
-
-
 
 private:
 	// ----- Méthodes -----
 	void initialisation();
+
+	void inputs();
+
+	// Spawn/Despawn
+	void spawn();
+	void removeActor(int actorId);
+	float randomSpeed();
+
+	// Display
+	int getActorXPositionOnScreen(int actorId, Layout& Screen);
+	int getActorYPositionOnScreen(int actorId, Layout& Screen);
+	void removeAllActorsFromScreen(Layout& Screen);
+	void setActorPositionOnScreen(int actorId, Layout& Screen);
+
+	// Game information
+	int getActorIdByLocation(int x, int y);
+	Actor& getActor(int actorId);
 	// --------------------
 
+
 	// ----- Attributs -----
-	std::vector<Actor> m_spawnedActors;
-	int m_mapSizeX, m_mapSizeY;
+	std::vector<Actor*> m_spawnedActors;
+	
+	int m_mapSizeX, m_mapSizeY, m_hiddenPart; // Dimensions de la map
 	float m_timingMs, m_timingS; // Timing du jeu en ms et s / paramètre des fonctions tick des acteurs.
-	//std::string* bigGrid; // Grille large
+	float m_speedMin, m_speedMax;
 	// ---------------------
 	
 };

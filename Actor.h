@@ -4,6 +4,7 @@
 #include <string>
 // -------------------
 
+
 /// <summary>
 ///	Abstract class inherited by every game object appearing in the map
 /// </summary>

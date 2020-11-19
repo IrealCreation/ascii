@@ -15,13 +15,13 @@ public:
 
 
 	// ----- Méthodes -----
-	void tick();
+	void tick(float deltaTime);
 	// --------------------
 
 
 protected:
 	// ----- Attributs -----
-
+	int m_health = 100;
 	// ---------------------
 
 
