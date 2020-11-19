@@ -25,6 +25,8 @@ public:
 	
 	virtual void tick(float deltaTime) = 0;
 
+
+
 	/// <summary>
 	/// What happens when I collide with another actor?
 	/// </summary>

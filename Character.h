@@ -21,7 +21,7 @@ public:
 
 protected:
 	// ----- Attributs -----
-
+	int m_health = 100;
 	// ---------------------
 
 

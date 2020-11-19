@@ -5,13 +5,17 @@
 
 #include <conio.h> //inputs
 
-#include <thread> // ContrÙle du timing du jeu 
+#include <thread> // Contr√¥le du timing du jeu 
 #include <chrono>
+
+#include <time.h> // Utilisation de l'al√©atoire.
+#include <random> 
 
 #include <vector>
 
 #include "Actor.h"
 #include "Character.h"
+#include "Comet.h"
 #include "Layout.h"
 // -------------------
 
@@ -20,7 +24,7 @@
 #define KEY_LEFT 75
 #define KEY_RIGHT 77
 #define KEY_DOWN 80
-#define KEY_ACTION 13 // 13 = touche entrÈe
+#define KEY_ACTION 13 // 13 = touche entr√©e
 // ------------------
 
 class GameLogic
@@ -30,33 +34,47 @@ public:
 	~GameLogic();
 	
 	void newGame();
+  
 
-	void setMap(Layout& Sreen);
-	
-	void addActor(Actor &element);
-	void removeActor(int actorId);
-	void setActorPositionOnScreen(int actorId, Layout &Screen);
-
-	void scrolling();
-
+	// Actors interactions
+	bool isLocationEmpty(int x, int y);
+	Actor& getActor(int x, int y);
 	Character* getCharacter();
-	
+	void removeActor(Actor& actor);
+
+	void spawn(Actor *actor);
 
 protected:
 
-
-
 private:
-	// ----- MÈthodes -----
+	// ----- M√©thodes -----
 	void initialisation();
+
+	void inputs();
+
+	// Spawn/Despawn
+	void spawn();
+	void removeActor(int actorId);
+	float randomSpeed();
+
+	// Display
+	int getActorXPositionOnScreen(int actorId, Layout& Screen);
+	int getActorYPositionOnScreen(int actorId, Layout& Screen);
+	void removeAllActorsFromScreen(Layout& Screen);
+	void setActorPositionOnScreen(int actorId, Layout& Screen);
+
+	// Game information
+	int getActorIdByLocation(int x, int y);
+	Actor& getActor(int actorId);
 	// --------------------
+
 
 	// ----- Attributs -----
 	std::vector<Actor*> m_spawnedActors;
 	Character* m_mainCharacter;
-	int m_mapSizeX, m_mapSizeY;
-	float m_timingMs, m_timingS; // Timing du jeu en ms et s / paramËtre des fonctions tick des acteurs.
-	//std::string* bigGrid; // Grille large
+	int m_mapSizeX, m_mapSizeY, m_hiddenPart; // Dimensions de la map
+	float m_timingMs, m_timingS; // Timing du jeu en ms et s / param√®tre des fonctions tick des acteurs.
+	float m_speedMin, m_speedMax;
 	// ---------------------
 	
 };
