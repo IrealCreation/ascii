@@ -5,10 +5,10 @@
 
 #include <conio.h> //inputs
 
-#include <thread> // Contrôle du timing du jeu 
+#include <thread> // ContrÃ´le du timing du jeu 
 #include <chrono>
 
-#include <time.h> // Utilisation de l'aléatoire.
+#include <time.h> // Utilisation de l'alÃ©atoire.
 #include <random> 
 
 #include <vector>
@@ -24,7 +24,7 @@
 #define KEY_LEFT 75
 #define KEY_RIGHT 77
 #define KEY_DOWN 80
-#define KEY_ACTION 13 // 13 = touche entrée
+#define KEY_ACTION 13 // 13 = touche entrÃ©e
 // ------------------
 
 class GameLogic
@@ -34,10 +34,12 @@ public:
 	~GameLogic();
 	
 	void newGame();
+  
 
 	// Actors interactions
 	bool isLocationEmpty(int x, int y);
 	Actor& getActor(int x, int y);
+	Character* getCharacter();
 	void removeActor(Actor& actor);
 
 	void spawn(Actor *actor);
@@ -45,7 +47,7 @@ public:
 protected:
 
 private:
-	// ----- Méthodes -----
+	// ----- MÃ©thodes -----
 	void initialisation();
 
 	void inputs();
@@ -69,9 +71,9 @@ private:
 
 	// ----- Attributs -----
 	std::vector<Actor*> m_spawnedActors;
-	
+	Character* m_mainCharacter;
 	int m_mapSizeX, m_mapSizeY, m_hiddenPart; // Dimensions de la map
-	float m_timingMs, m_timingS; // Timing du jeu en ms et s / paramètre des fonctions tick des acteurs.
+	float m_timingMs, m_timingS; // Timing du jeu en ms et s / paramÃ¨tre des fonctions tick des acteurs.
 	float m_speedMin, m_speedMax;
 	// ---------------------
 	

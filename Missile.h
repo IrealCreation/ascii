@@ -6,15 +6,15 @@
 // -------------------
 
 /// <summary>
-///	A celestial object moving linearly and inflicting damages if collided
+///	A fired projectile that will explode on contact of another actor
 /// </summary>
-class Comet : public Projectile
+class Missile : public Projectile
 {
 public:
 	// ----- Constructeur/Destructeur -----
-	Comet(int x, int y, char axis, bool way, float speed);
+	Missile(int x, int y, char axis, bool way, int damages);
 
-	~Comet();
+	~Missile();
 	// ------------------------------------
 
 };

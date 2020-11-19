@@ -3,7 +3,7 @@
 
 
 
-// _getch() pour récupérer les inputs du joueur
+// _getch() pour rÃ©cupÃ©rer les inputs du joueur
 
 // ----- Constructeurs -----
 GameLogic::GameLogic() : m_mapSizeX(55), m_mapSizeY(55), m_hiddenPart(20), m_timingMs(50), m_timingS(m_timingMs / (float)1000.00), m_speedMin((float)5), m_speedMax((float)15)
@@ -22,7 +22,7 @@ void GameLogic::newGame()
 {
 
 	// ----- Menu principal -----
-	// ----- Création du Menu -----
+	// ----- CrÃ©ation du Menu -----
 	std::string borders = "+";
 	Layout MainMenu(36, 36, 40, 5);
 	MainMenu.createBorders(borders);
@@ -40,7 +40,7 @@ void GameLogic::newGame()
 	bool startGame = false;
 	while (1)
 	{
-		// ----- Sélection d'une action dans le menu principal -----
+		// ----- SÃ©lection d'une action dans le menu principal -----
 		std::this_thread::sleep_for(std::chrono::milliseconds(50)); // Attendre 50ms
 		BlockInput(false); // Autorise les inputs du joueur
 		switch (_getch())
@@ -72,14 +72,14 @@ void GameLogic::newGame()
 			{
 				// NEW GAME
 				
-				startGame = true; // À améliorer ?
+				startGame = true; // Ã€ amÃ©liorer ?
 				break;
 			}
 			else if (cursorPosition == 1)
 			{
 				// QUIT GAME
 				
-				startGame = false; // À améliorer ?
+				startGame = false; // Ã€ amÃ©liorer ?
 				break;
 			}
 		}
@@ -99,12 +99,15 @@ void GameLogic::newGame()
 		}
 		// -----------------------------------------
 
-		MainMenu.refresh(); // Rafraîchit la fenêtre
+		MainMenu.refresh(); // RafraÃ®chit la fenÃªtre
 
 
-		// ----- Début de la partie -----
+		// ----- DÃ©but de la partie -----
 		if (startGame == true)
 		{
+			// Instantiate the player character
+			m_mainCharacter = new Character(10, 10);
+			
 			break;
 			// START NEW GAME
 		}
@@ -115,8 +118,8 @@ void GameLogic::newGame()
 	MainMenu.setVisibility(false, " "); // Menu principal rendu invisible.
 	// --------------------------
 
-	// ----- Création de la fenêtre principale -----
-	spawn(new Character((m_mapSizeX / 2), (m_mapSizeY / 2), 100)); // Création du personnage principal au centre de l'écran
+	// ----- CrÃ©ation de la fenÃªtre principale -----
+	spawn(new Character((m_mapSizeX / 2), (m_mapSizeY / 2), 100)); // CrÃ©ation du personnage principal au centre de l'Ã©cran
 	spawn(new Comet(30, 16, "x", 1, (float)1.7));
 
 
@@ -139,7 +142,7 @@ void GameLogic::newGame()
 		removeAllActorsFromScreen(MainScreen);
 		// --------------------------------------------------
 	
-		for (std::size_t i = 0; i < m_spawnedActors.size(); i++) // Pour chaque acteur présent.
+		for (std::size_t i = 0; i < m_spawnedActors.size(); i++) // Pour chaque acteur prÃ©sent.
 		{
 			(*m_spawnedActors.at(i)).tick(m_timingS); // Lance le tick de chaque acteur.
 
@@ -155,7 +158,7 @@ void GameLogic::newGame()
 		spawn();
 		inputs();
 
-		for (std::size_t i = 0; i < m_spawnedActors.size(); i++) // Place chaque acteur sur l'écran.
+		for (std::size_t i = 0; i < m_spawnedActors.size(); i++) // Place chaque acteur sur l'Ã©cran.
 		{
 			setActorPositionOnScreen(i, MainScreen);
 		}
@@ -181,18 +184,18 @@ void GameLogic::newGame()
 
 
 
-// ----- Vérifie si un emplacement est vide -----
+// ----- VÃ©rifie si un emplacement est vide -----
 bool GameLogic::isLocationEmpty(int x, int y)
 {
-	bool output = true; // Emplacement vide par défaut.
-	int selectedX(x), selectedY(y); // Coordonnées x y qu'on souhaite vérifier.
-	int actorX(0), actorY(0); // Coordonnées des acteurs.
+	bool output = true; // Emplacement vide par dÃ©faut.
+	int selectedX(x), selectedY(y); // CoordonnÃ©es x y qu'on souhaite vÃ©rifier.
+	int actorX(0), actorY(0); // CoordonnÃ©es des acteurs.
 
-	for (std::size_t i = 0; i < m_spawnedActors.size(); i++) // Vérification de la position de chaque acteur de la boucle.
+	for (std::size_t i = 0; i < m_spawnedActors.size(); i++) // VÃ©rification de la position de chaque acteur de la boucle.
 	{
 		actorX = (*m_spawnedActors.at(i)).getPositionX();
 		actorY = (*m_spawnedActors.at(i)).getPositionY();
-		if (actorX == selectedX && actorY == selectedY) // Si les coordonnées correspondent à celle d'un acteur
+		if (actorX == selectedX && actorY == selectedY) // Si les coordonnÃ©es correspondent Ã  celle d'un acteur
 		{
 			output = false; // alors l'emplacement n'est pas vide.
 		}
@@ -229,7 +232,7 @@ void GameLogic::spawn(Actor *actor)
 // ----- Initialisation -----
 void GameLogic::initialisation()
 {
-	// ----- Gestion de la police d'écriture -----
+	// ----- Gestion de la police d'Ã©criture -----
 	CONSOLE_FONT_INFOEX cfi;
 	cfi.cbSize = sizeof(cfi);
 	cfi.nFont = 0;
@@ -241,7 +244,7 @@ void GameLogic::initialisation()
 	SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
 	// --------------------------------------------
 
-	// ----- Affiche en plein écran -----
+	// ----- Affiche en plein Ã©cran -----
 	ShowWindow(GetConsoleWindow(), SW_MAXIMIZE);
 	// ----------------------------------
 
@@ -249,7 +252,7 @@ void GameLogic::initialisation()
 	SendMessage(GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000);
 	// -----------------------------------
 
-	// ----- Supprime la barre de défilement verticale -----
+	// ----- Supprime la barre de dÃ©filement verticale -----
 	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_SCREEN_BUFFER_INFO info;
 	GetConsoleScreenBufferInfo(handle, &info);
@@ -326,7 +329,7 @@ void GameLogic::spawn()
 	// -----------------------------------
 	if ((m_spawnedActors.size()) < 20) 
 	{
-		if (distr(gen) == 1) // Spawn à gauche.
+		if (distr(gen) == 1) // Spawn Ã  gauche.
 		{
 			rangeFrom = 0;
 			rangeTo = (m_hiddenPart / 2) - 1;
@@ -342,7 +345,7 @@ void GameLogic::spawn()
 				m_spawnedActors.push_back(new Comet(x, y, "x", 1, randomSpeed()));
 			}
 		}
-		else if (distr(gen) == 2) // Spawn à droite.
+		else if (distr(gen) == 2) // Spawn Ã  droite.
 		{
 			rangeFrom = m_mapSizeX - (m_hiddenPart / 2);
 			rangeTo = m_mapSizeX - 1;
@@ -396,7 +399,7 @@ void GameLogic::removeActor(int actorId)
 {
 	if (actorId != 0)
 	{
-		m_spawnedActors.erase(m_spawnedActors.begin() + actorId); // Efface la case ciblée dans le tableau.
+		m_spawnedActors.erase(m_spawnedActors.begin() + actorId); // Efface la case ciblÃ©e dans le tableau.
 	}
 }
 // ----------------------------
@@ -412,7 +415,6 @@ float GameLogic::randomSpeed()
 	return distr(gen);
 }
 // ----------------------------------
-
 
 
 // ----- Get actors' positions on screen -----
@@ -436,11 +438,12 @@ void GameLogic::removeAllActorsFromScreen(Layout &Screen)
 
 	for (std::size_t i = 1; i < m_spawnedActors.size(); i++)
 	{
+
 		x = (*m_spawnedActors.at(i)).getPositionX();
 		y = (*m_spawnedActors.at(i)).getPositionY();
 		if (x < m_mapSizeX - (m_hiddenPart / 2) && x >= (m_hiddenPart / 2) && y < m_mapSizeY - (m_hiddenPart / 2) && y >= (m_hiddenPart / 2))
 		{
-			Screen.setGrid(getActorXPositionOnScreen(i, Screen), getActorYPositionOnScreen(i, Screen), " "); // Place un vide à chaque acteur (sauf joueur).
+			Screen.setGrid(getActorXPositionOnScreen(i, Screen), getActorYPositionOnScreen(i, Screen), " "); // Place un vide Ã  chaque acteur (sauf joueur).
 		}
 	}
 }
@@ -459,28 +462,33 @@ void GameLogic::setActorPositionOnScreen(int actorId, Layout &Screen)
 
 	if (x < m_mapSizeX - (m_hiddenPart / 2) && x >= (m_hiddenPart / 2) && y < m_mapSizeY - (m_hiddenPart / 2) && y >= (m_hiddenPart / 2))
 	{
-		Screen.setGrid(x - (m_hiddenPart / 2), y - (m_hiddenPart / 2), aspect, color); // Positionner l'élément sur la grille de l'écran principal
+		Screen.setGrid(x - (m_hiddenPart / 2), y - (m_hiddenPart / 2), aspect, color); // Positionner l'Ã©lÃ©ment sur la grille de l'Ã©cran principal
 	}
 }
 // -----------------------------------------------------------------
 
 
+Character* GameLogic::getCharacter()
+{
+	return m_mainCharacter;
+}
 
-// ----- Récupère l'ID d'un acteur à partir de sa position x et y -----
-// À lancer après avoir fait un isLocationEmpty
-// sinon renvoie à Character (ID = 0).
+
+// ----- RÃ©cupÃ¨re l'ID d'un acteur Ã  partir de sa position x et y -----
+// Ã€ lancer aprÃ¨s avoir fait un isLocationEmpty
+// sinon renvoie Ã  Character (ID = 0).
 int GameLogic::getActorIdByLocation(int x, int y) 
 {
 	int id(0);
 	int actorX(0), actorY(0);
 
-	for (std::size_t i = 0; i < m_spawnedActors.size(); i++) // Vérification de la position de chaque acteur de la boucle.
+	for (std::size_t i = 0; i < m_spawnedActors.size(); i++) // VÃ©rification de la position de chaque acteur de la boucle.
 	{
 		actorX = (*m_spawnedActors.at(i)).getPositionX();
 		actorY = (*m_spawnedActors.at(i)).getPositionY();
-		if (actorX == x && actorY == y) // Si les coordonnées correspondent à celle d'un acteur
+		if (actorX == x && actorY == y) // Si les coordonnÃ©es correspondent Ã  celle d'un acteur
 		{
-			id = i; // alors on récupère son ID.
+			id = i; // alors on rÃ©cupÃ¨re son ID.
 		}
 	}
 	return id;

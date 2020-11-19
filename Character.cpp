@@ -2,7 +2,7 @@
 
 
 // ----- Constructeur/Destructeur -----
-Character::Character(int x, int y, int health) : Destructible(x, y, health, "v") {}
+Character::Character(int x, int y) : Destructible(x, y, 100, "V") {}
 
 Character::~Character(){}
 // ------------------------------------
