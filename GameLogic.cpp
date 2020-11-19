@@ -1,6 +1,6 @@
 #include "GameLogic.h"
 
-
+#include "Enemy.h"
 
 
 // _getch() pour récupérer les inputs du joueur
@@ -8,6 +8,9 @@
 // ----- Constructeurs -----
 GameLogic::GameLogic() : m_mapSizeX(55), m_mapSizeY(55), m_hiddenPart(20), m_timingMs(50), m_timingS(m_timingMs / (float)1000.00), m_speedMin((float)5), m_speedMax((float)15)
 {
+	// Setup the static variable m_mainGameLogic so it can be accessed by anyone through GameLogic.getGameLogic()
+	m_mainGameLogic = this;
+	
 	initialisation();
 }
 // -------------------------
@@ -136,7 +139,7 @@ void GameLogic::newGame()
 	std::string actorsAmount;
 	int actorsRemoved = 0;
 
-
+	spawn(new Enemy(20, 20, "Badguy", 1));
 
 	for (int j = 0; j < 500; j++)
 	{
@@ -157,7 +160,7 @@ void GameLogic::newGame()
 			}
 
 		}
-		spawn();
+		//spawn();
 		inputs();
 
 		for (std::size_t i = 0; i < m_spawnedActors.size(); i++) // Place chaque acteur sur l'écran.
@@ -181,6 +184,11 @@ void GameLogic::newGame()
 		break;
 	}
 	// ------------------------------------
+}
+
+GameLogic* GameLogic::getGameLogic()
+{
+	return m_mainGameLogic;
 }
 // --------------------
 
@@ -503,28 +511,3 @@ Actor& GameLogic::getActor(int actorId)
 	return (*m_spawnedActors.at(actorId));
 }
 // -------------------------------------
-
-
-
-// ------------------------------
-/// 1- inputs?
-/// 2- actor's actions? (fonction tick pour chaque acteur)
-/// 3- screen refresh
-/// 
-/// 
-/// std::this_thread::sleep_for(std::chrono::milliseconds(timingMs));
-/// 
-/// 
-/// To spawn a new Actor do :
-/// m_spawnedActors.push_back(new Actor());
-/// 
-/// - Check initial actors' positions
-/// - Move actors
-/// - Check new actors' positions
-/// - make sure they are inside the screen and display actors on screen
-// ------------------------------
-// ----- TO DO -----
-/// - Player's speed
-/// - Random speed on spawn
-/// - Fixing bug of spawn outside the range
-// -----------------

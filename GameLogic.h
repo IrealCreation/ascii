@@ -34,7 +34,8 @@ public:
 	~GameLogic();
 	
 	void newGame();
-  
+
+	static GameLogic* getGameLogic();
 
 	// Actors interactions
 	bool isLocationEmpty(int x, int y);
@@ -72,6 +73,7 @@ private:
 	// ----- Attributs -----
 	std::vector<Actor*> m_spawnedActors;
 	Character* m_mainCharacter;
+	static GameLogic* m_mainGameLogic;
 	int m_mapSizeX, m_mapSizeY, m_hiddenPart; // Dimensions de la map
 	float m_timingMs, m_timingS; // Timing du jeu en ms et s / paramètre des fonctions tick des acteurs.
 	float m_speedMin, m_speedMax;
