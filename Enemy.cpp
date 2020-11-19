@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "GameLogic.h"
 
 // ----- Constructeur/Destructeur -----
 Enemy::Enemy(int x, int y, std::string name, float speed) : Destructible(x, y, 100, "e"), m_name(name), m_speed(speed) {}
@@ -14,14 +15,16 @@ void Enemy::tick(float deltaTime)
 	// The amount of move available this turn
 	float move = deltaTime * m_speed + m_moveRemaining;
 
-	// We get the integer part of the move to see what movement is actually performed this tick, and put the rest in moveRemaining
-	int intMove = modff(move, &m_moveRemaining);
+	// Let's get the integer part of the move to see what movement is actually performed this tick, and put the rest in moveRemaining
+	float completeMove = 0;
+	m_moveRemaining = modff(move, &completeMove);
 
-	//TODO: get the character X and Y coordinated from GameLogic
-	int targetX = 0;
-	int targetY = 0;
+	//Get the main character from GameLogic
+	Character* character = GameLogic::getGameLogic()->getCharacter();
+	int targetX = (*character).getPositionX();
+	int targetY = (*character).getPositionY();
 
-	while(intMove > 0)
+	while(completeMove > 0)
 	{
 		bool success = true;
 		
@@ -58,6 +61,6 @@ void Enemy::tick(float deltaTime)
 			// Oops, the enemy collided with something... we interrupt the whole move by breaking out of the loop
 			break;
 		}
-		intMove--;
+		completeMove--;
 	}
 }

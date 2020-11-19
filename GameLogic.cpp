@@ -5,15 +5,20 @@
 
 // _getch() pour récupérer les inputs du joueur
 
+// ----- Instantiating static variables -----
+GameLogic* GameLogic::m_mainGameLogic;
+
+
 // ----- Constructeurs -----
 GameLogic::GameLogic() : m_mapSizeX(55), m_mapSizeY(55), m_hiddenPart(20), m_timingMs(50), m_timingS(m_timingMs / (float)1000.00), m_speedMin((float)5), m_speedMax((float)15)
 {
 	// Setup the static variable m_mainGameLogic so it can be accessed by anyone through GameLogic.getGameLogic()
-	m_mainGameLogic = this;
+	GameLogic::m_mainGameLogic = this;
 	
 	initialisation();
 }
 // -------------------------
+
 
 // ----- Destructeur -----
 GameLogic::~GameLogic(){}
