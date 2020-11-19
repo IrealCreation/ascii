@@ -119,8 +119,8 @@ void GameLogic::newGame()
 	// --------------------------
 
 	// ----- Création de la fenêtre principale -----
-	spawn(new Character((m_mapSizeX / 2), (m_mapSizeY / 2), 100)); // Création du personnage principal au centre de l'écran
-	spawn(new Comet(30, 16, "x", 1, (float)1.7));
+	spawn(new Character((m_mapSizeX / 2), (m_mapSizeY / 2))); // Création du personnage principal au centre de l'écran
+	spawn(new Comet(30, 16, 'x', 1, (float)1.7));
 
 
 	Layout MainScreen((m_mapSizeX - m_hiddenPart), (m_mapSizeY - m_hiddenPart), 1, 1);
@@ -342,7 +342,7 @@ void GameLogic::spawn()
 
 			if (isLocationEmpty(x, y) == true)
 			{
-				m_spawnedActors.push_back(new Comet(x, y, "x", 1, randomSpeed()));
+				m_spawnedActors.push_back(new Comet(x, y, 'x', 1, randomSpeed()));
 			}
 		}
 		else if (distr(gen) == 2) // Spawn à droite.
@@ -357,7 +357,7 @@ void GameLogic::spawn()
 			y = distrY(gen);
 			if (isLocationEmpty(x, y) == true)
 			{
-				m_spawnedActors.push_back(new Comet(x, y, "x", 0, randomSpeed()));
+				m_spawnedActors.push_back(new Comet(x, y, 'x', 0, randomSpeed()));
 			}
 		}
 		else if (distr(gen) == 3) // Spawn en haut.
@@ -372,7 +372,7 @@ void GameLogic::spawn()
 			x = distrX(gen);
 			if (isLocationEmpty(x, y) == true)
 			{
-				m_spawnedActors.push_back(new Comet(x, y, "y", 1, randomSpeed()));
+				m_spawnedActors.push_back(new Comet(x, y, 'y', 1, randomSpeed()));
 			}
 		}
 		else if (distr(gen) == 4) // Spawn en bas.
@@ -387,7 +387,7 @@ void GameLogic::spawn()
 			x = distrX(gen);
 			if (isLocationEmpty(x, y) == true)
 			{
-				m_spawnedActors.push_back(new Comet(x, y, "y", 0, randomSpeed()));
+				m_spawnedActors.push_back(new Comet(x, y, 'y', 0, randomSpeed()));
 			}
 		}
 	}

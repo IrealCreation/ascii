@@ -8,6 +8,7 @@ Comet::Comet(int x, int y, char axis, bool direction, float speed) : Projectile(
 Comet::~Comet() {}
 // ------------------------------------
 
+/*
 void Comet::tick(float deltaTime)
 {
 	// The amount of move available this turn
@@ -40,3 +41,4 @@ void Comet::collideWith(Actor& collider)
 	// The comet is immediately destroyed when collided
 	destroy();
 }
+*/
