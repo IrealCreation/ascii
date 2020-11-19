@@ -140,6 +140,9 @@ void GameLogic::newGame()
 		// ----- Début de la partie -----
 		if (startGame == true)
 		{
+			// Instantiate the player character
+			m_mainCharacter = new Character(10, 10);
+			
 			break;
 			// START NEW GAME
 		}
@@ -177,6 +180,7 @@ void GameLogic::addActor(Actor &element)
 void GameLogic::removeActor(int actorId)
 {
 	// if spwnActor size != de 0 ----- ID 0 = Joueur.
+	// Is it necessary to keep the player Character in the actor vector? After all it should not be deleted, doesn't tick, and isn't affected by scrolling...
 	if (actorId != 0)
 	{
 		(*m_spawnedActors.at(actorId)).~Actor();
@@ -218,6 +222,12 @@ void GameLogic::scrolling()
 	}
 	// --------------------------
 }
+
+Character* GameLogic::getCharacter()
+{
+	return m_mainCharacter;
+}
+
 
 // ----- Spawn -----
 /// On crée un vector dans lequel on enregistre chaque actor de la map
