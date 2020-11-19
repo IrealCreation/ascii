@@ -118,23 +118,25 @@ void GameLogic::newGame()
 	MainMenu.setVisibility(false, " "); // Menu principal rendu invisible.
 	// --------------------------
 
-	// ----- Création de la fenêtre principale -----
-	spawn(new Character((m_mapSizeX / 2), (m_mapSizeY / 2))); // Création du personnage principal au centre de l'écran
-	spawn(new Comet(30, 16, 'x', 1, (float)1.7));
 
+	// ----- Création de la fenêtre principale ----- 
+
+	m_mainCharacter = new Character((m_mapSizeX / 2), (m_mapSizeY / 2)); // Création du personnage principal au centre de l'écran
+	m_spawnedActors.push_back(m_mainCharacter);
 
 	Layout MainScreen((m_mapSizeX - m_hiddenPart), (m_mapSizeY - m_hiddenPart), 1, 1);
 	MainScreen.createBorders("#");
 	setActorPositionOnScreen(0, MainScreen);
-	setActorPositionOnScreen(1, MainScreen);
 	MainScreen.refresh();
 
-	Layout SideScreen(20, 10, 5, 0, MainScreen, "X");
+	Layout SideScreen(20, 10, 5, 0, MainScreen, "y");
 	SideScreen.setGrid(5, 0, "- Debug -");
 	SideScreen.setGrid(5, 5, "Removed Actors:");
 
 	std::string actorsAmount;
 	int actorsRemoved = 0;
+
+
 
 	for (int j = 0; j < 500; j++)
 	{
