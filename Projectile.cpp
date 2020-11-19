@@ -19,18 +19,19 @@ void Projectile::tick(float deltaTime)
 	float move = deltaTime * m_speed + m_moveRemaining;
 
 	// Let's get the integer part of the move to see what movement is actually performed this tick, and put the rest in moveRemaining
-	int intMove = modff(move, &m_moveRemaining);
+	float completeMove;
+	m_moveRemaining = modff(move, &completeMove);
 
 	// Perform the move in the programmed direction
 	int newPosX = m_positionX;
 	int newPosY = m_positionY;
 	if (m_axis == "x")
 	{
-		newPosX += intMove * (m_direction) ? 1 : -1;
+		newPosX += completeMove * ((m_direction) ? 1 : -1);
 	}
 	else
 	{
-		newPosY += intMove * (m_direction) ? 1 : -1;
+		newPosY += completeMove * ((m_direction) ? 1 : -1);
 	}
 	moveTo(newPosX, newPosY);
 }
