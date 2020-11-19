@@ -53,6 +53,7 @@ private:
 	// Spawn/Despawn
 	void spawn();
 	void removeActor(int actorId);
+	float randomSpeed();
 
 	// Display
 	int getActorXPositionOnScreen(int actorId, Layout& Screen);
@@ -71,6 +72,7 @@ private:
 	
 	int m_mapSizeX, m_mapSizeY, m_hiddenPart; // Dimensions de la map
 	float m_timingMs, m_timingS; // Timing du jeu en ms et s / paramètre des fonctions tick des acteurs.
+	float m_speedMin, m_speedMax;
 	// ---------------------
 	
 };

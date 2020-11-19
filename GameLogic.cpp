@@ -6,7 +6,7 @@
 // _getch() pour récupérer les inputs du joueur
 
 // ----- Constructeurs -----
-GameLogic::GameLogic() : m_mapSizeX(55), m_mapSizeY(55), m_hiddenPart(20), m_timingMs(50), m_timingS(m_timingMs / (float)1000.00)
+GameLogic::GameLogic() : m_mapSizeX(55), m_mapSizeY(55), m_hiddenPart(20), m_timingMs(50), m_timingS(m_timingMs / (float)1000.00), m_speedMin((float)5), m_speedMax((float)15)
 {
 	initialisation();
 }
@@ -260,7 +260,12 @@ void GameLogic::initialisation()
 	};
 	SetConsoleScreenBufferSize(handle, new_size);
 	// -----------------------------------------------------
-}
+
+	// ----- Initialisation de <random> -----
+	std::random_device rd; // obtain a random number from hardware
+	std::mt19937 gen(rd()); // seed the generator
+	// --------------------------------------
+}	
 // --------------------------
 
 
@@ -324,62 +329,62 @@ void GameLogic::spawn()
 		if (distr(gen) == 1) // Spawn à gauche.
 		{
 			rangeFrom = 0;
-			rangeTo = m_hiddenPart / 2;
+			rangeTo = (m_hiddenPart / 2) - 1;
 			std::uniform_int_distribution<int> distrX(rangeFrom, rangeTo);
 			x = distrX(gen);
 			rangeFrom = 0;
-			rangeTo = m_mapSizeY;
+			rangeTo = m_mapSizeY - 1;
 			std::uniform_int_distribution<int> distrY(rangeFrom, rangeTo);
 			y = distrY(gen);
 
 			if (isLocationEmpty(x, y) == true)
 			{
-				m_spawnedActors.push_back(new Comet(x, y, "x", 1, 10));
+				m_spawnedActors.push_back(new Comet(x, y, "x", 1, randomSpeed()));
 			}
 		}
 		else if (distr(gen) == 2) // Spawn à droite.
 		{
 			rangeFrom = m_mapSizeX - (m_hiddenPart / 2);
-			rangeTo = m_mapSizeX;
+			rangeTo = m_mapSizeX - 1;
 			std::uniform_int_distribution<int> distrX(rangeFrom, rangeTo);
 			x = distrX(gen);
 			rangeFrom = 0;
-			rangeTo = m_mapSizeY;
+			rangeTo = m_mapSizeY - 1;
 			std::uniform_int_distribution<int> distrY(rangeFrom, rangeTo);
 			y = distrY(gen);
 			if (isLocationEmpty(x, y) == true)
 			{
-				m_spawnedActors.push_back(new Comet(x, y, "x", 0, 1));
+				m_spawnedActors.push_back(new Comet(x, y, "x", 0, randomSpeed()));
 			}
 		}
 		else if (distr(gen) == 3) // Spawn en haut.
 		{
 			rangeFrom = 0;
-			rangeTo = m_hiddenPart / 2;
+			rangeTo = (m_hiddenPart / 2) - 1;
 			std::uniform_int_distribution<int> distrY(rangeFrom, rangeTo);
 			y = distrY(gen);
 			rangeFrom = 0;
-			rangeTo = m_mapSizeX;
+			rangeTo = m_mapSizeX - 1;
 			std::uniform_int_distribution<int> distrX(rangeFrom, rangeTo);
 			x = distrX(gen);
 			if (isLocationEmpty(x, y) == true)
 			{
-				m_spawnedActors.push_back(new Comet(x, y, "y", 1, 1));
+				m_spawnedActors.push_back(new Comet(x, y, "y", 1, randomSpeed()));
 			}
 		}
 		else if (distr(gen) == 4) // Spawn en bas.
 		{
 			rangeFrom = m_mapSizeY - (m_hiddenPart / 2);
-			rangeTo = m_mapSizeY;
+			rangeTo = m_mapSizeY - 1;
 			std::uniform_int_distribution<int> distrY(rangeFrom, rangeTo);
 			y = distrY(gen);
 			rangeFrom = 0;
-			rangeTo = m_mapSizeX;
+			rangeTo = m_mapSizeX - 1;
 			std::uniform_int_distribution<int> distrX(rangeFrom, rangeTo);
 			x = distrX(gen);
 			if (isLocationEmpty(x, y) == true)
 			{
-				m_spawnedActors.push_back(new Comet(x, y, "y", 0, 1));
+				m_spawnedActors.push_back(new Comet(x, y, "y", 0, randomSpeed()));
 			}
 		}
 	}
@@ -395,6 +400,18 @@ void GameLogic::removeActor(int actorId)
 	}
 }
 // ----------------------------
+
+// ----- Random speed generator -----
+float GameLogic::randomSpeed()
+{
+	// ----- Initialisation de <random> -----
+	std::random_device rd; // obtain a random number from hardware
+	std::mt19937 gen(rd()); // seed the generator
+	// --------------------------------------
+	std::uniform_real_distribution<float> distr(m_speedMin, m_speedMax);
+	return distr(gen);
+}
+// ----------------------------------
 
 
 
@@ -498,4 +515,6 @@ Actor& GameLogic::getActor(int actorId)
 // ------------------------------
 // ----- TO DO -----
 /// - Player's speed
+/// - Random speed on spawn
+/// - Fixing bug of spawn outside the range
 // -----------------
