@@ -1,6 +1,7 @@
 #pragma once
 
 // ----- Headers -----
+#include "GameLogic.h"
 #include "Projectile.h"
 #include <string>
 // -------------------

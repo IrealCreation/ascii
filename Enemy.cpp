@@ -1,7 +1,7 @@
 #include "Enemy.h"
 
 // ----- Constructeur/Destructeur -----
-Enemy::Enemy(int x, int y, std::string name, float speed) : Destructible(x, y, 100, "e"), m_name(name), m_speed(speed) {}
+Enemy::Enemy(int x, int y, std::string name, float speed) : Destructible(x, y, 100, "E"), m_name(name), m_speed(speed) {}
 
 Enemy::~Enemy() {}
 // ------------------------------------

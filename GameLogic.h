@@ -12,10 +12,12 @@
 #include <random> 
 
 #include <vector>
+#include <typeinfo>
 
 #include "Actor.h"
 #include "Character.h"
 #include "Comet.h"
+#include "Enemy.h"
 #include "Layout.h"
 // -------------------
 
@@ -44,6 +46,10 @@ public:
 
 	void spawn(Actor *actor);
 
+	// Actors count
+	void counterAdd(std::string type);
+	void counterSubstract(std::string type);
+
 protected:
 
 private:
@@ -54,8 +60,10 @@ private:
 
 	// Spawn/Despawn
 	void spawn();
+	int spawnSelection();
 	void removeActor(int actorId);
 	float randomSpeed();
+	int randomInt(int rangeFrom, int rangeTo);
 
 	// Display
 	int getActorXPositionOnScreen(int actorId, Layout& Screen);
@@ -74,7 +82,11 @@ private:
 	Character* m_mainCharacter;
 	int m_mapSizeX, m_mapSizeY, m_hiddenPart; // Dimensions de la map
 	float m_timingMs, m_timingS; // Timing du jeu en ms et s / paramètre des fonctions tick des acteurs.
+	
 	float m_speedMin, m_speedMax;
+	
+	int m_actorsAmountLimit;
+	int m_asteroidsCounter, m_cometsCounter; // Counters
 	// ---------------------
 	
 };

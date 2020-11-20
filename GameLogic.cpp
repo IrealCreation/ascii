@@ -6,7 +6,8 @@
 // _getch() pour récupérer les inputs du joueur
 
 // ----- Constructeurs -----
-GameLogic::GameLogic() : m_mapSizeX(55), m_mapSizeY(55), m_hiddenPart(20), m_timingMs(50), m_timingS(m_timingMs / (float)1000.00), m_speedMin((float)5), m_speedMax((float)15)
+GameLogic::GameLogic() : m_mapSizeX(55), m_mapSizeY(55), m_hiddenPart(20), m_timingMs(50), m_timingS(m_timingMs / (float)1000.00), m_speedMin((float)5), m_speedMax((float)15),
+m_actorsAmountLimit(20), m_asteroidsCounter(0), m_cometsCounter(0)
 {
 	initialisation();
 }
@@ -132,6 +133,7 @@ void GameLogic::newGame()
 	Layout SideScreen(20, 10, 5, 0, MainScreen, "y");
 	SideScreen.setGrid(5, 0, "- Debug -");
 	SideScreen.setGrid(5, 5, "Removed Actors:");
+	SideScreen.setGrid(5, 8, "Comets:");
 
 	std::string actorsAmount;
 	int actorsRemoved = 0;
@@ -168,6 +170,7 @@ void GameLogic::newGame()
 
 		actorsAmount = std::to_string((int)m_spawnedActors.size());
 		SideScreen.setGrid(5, 4, actorsAmount);
+		SideScreen.setGrid(5, 9, std::to_string(m_cometsCounter));
 		SideScreen.refresh();
 		std::this_thread::sleep_for(std::chrono::milliseconds((long)m_timingMs));
 	}
@@ -224,12 +227,42 @@ void GameLogic::removeActor(Actor& actor)
 }
 // -----------------------------------------
 
-// ----- Spawn for debug -----
+// ----- Spawn -----
 void GameLogic::spawn(Actor *actor)
 {
 	m_spawnedActors.push_back(actor);
 }
-// ---------------------------
+// -----------------
+
+// ----- Actors' counters ------
+void GameLogic::counterAdd(std::string type)
+{
+	if (type == "Comet")
+	{
+		m_cometsCounter++;
+	}
+	else if (type == "Asteroid")
+	{
+		m_asteroidsCounter++;
+	}
+}
+
+void GameLogic::counterSubstract(std::string type)
+{
+	if (type == "Comet")
+	{
+		m_cometsCounter--;
+	}
+	else if (type == "Asteroid")
+	{
+		m_asteroidsCounter--;
+	}
+}
+// -----------------------------
+
+
+
+
 
 // ----- Initialisation -----
 void GameLogic::initialisation()
@@ -316,85 +349,107 @@ void GameLogic::inputs()
 
 
 
+
 // ----- Spawn -----
 void GameLogic::spawn()
 {
-	int x(0), y(0);
-
-	// ----- Utilisation de <random> -----
-	int rangeFrom(1), rangeTo(4);
-
-	std::random_device rd; // obtain a random number from hardware
-	std::mt19937 gen(rd()); // seed the generator
-	std::uniform_int_distribution<int> distr(rangeFrom, rangeTo); // define the range
+	int x(0), y(0), iRand(randomInt(1, 4)), s(spawnSelection());
 
 	// -----------------------------------
-	if ((m_spawnedActors.size()) < 20) 
+	if ((m_spawnedActors.size()) < m_actorsAmountLimit) 
 	{
-		if (distr(gen) == 1) // Spawn à gauche.
+		if (iRand == 1) // Spawn à gauche.
 		{
-			rangeFrom = 0;
-			rangeTo = (m_hiddenPart / 2) - 1;
-			std::uniform_int_distribution<int> distrX(rangeFrom, rangeTo);
-			x = distrX(gen);
-			rangeFrom = 0;
-			rangeTo = m_mapSizeY - 1;
-			std::uniform_int_distribution<int> distrY(rangeFrom, rangeTo);
-			y = distrY(gen);
-
+			x = randomInt(0, (m_hiddenPart / 2) - 1);
+			y = randomInt(0, m_mapSizeY - 1);
 			if (isLocationEmpty(x, y) == true)
 			{
-				m_spawnedActors.push_back(new Comet(x, y, 'x', 1, randomSpeed()));
+				if (s == 1)
+				{
+					spawn(new Comet(x, y, 'x', 1, randomSpeed()));
+				}
+				else if (s == 2)
+				{
+					spawn(new Enemy(x, y, "E", randomSpeed()));
+				}
 			}
 		}
-		else if (distr(gen) == 2) // Spawn à droite.
+		else if (iRand == 2) // Spawn à droite.
 		{
-			rangeFrom = m_mapSizeX - (m_hiddenPart / 2);
-			rangeTo = m_mapSizeX - 1;
-			std::uniform_int_distribution<int> distrX(rangeFrom, rangeTo);
-			x = distrX(gen);
-			rangeFrom = 0;
-			rangeTo = m_mapSizeY - 1;
-			std::uniform_int_distribution<int> distrY(rangeFrom, rangeTo);
-			y = distrY(gen);
+			x = randomInt((m_mapSizeX - (m_hiddenPart / 2)), (m_mapSizeY - 1));
+			y = randomInt(0, (m_mapSizeY - 1));
 			if (isLocationEmpty(x, y) == true)
 			{
-				m_spawnedActors.push_back(new Comet(x, y, 'x', 0, randomSpeed()));
+				if (s == 1)
+				{
+					spawn(new Comet(x, y, 'x', 0, randomSpeed()));
+				}
+				else if (s == 2)
+				{
+					spawn(new Enemy(x, y, "E", randomSpeed()));
+				}
 			}
 		}
-		else if (distr(gen) == 3) // Spawn en haut.
+		else if (iRand == 3) // Spawn en haut.
 		{
-			rangeFrom = 0;
-			rangeTo = (m_hiddenPart / 2) - 1;
-			std::uniform_int_distribution<int> distrY(rangeFrom, rangeTo);
-			y = distrY(gen);
-			rangeFrom = 0;
-			rangeTo = m_mapSizeX - 1;
-			std::uniform_int_distribution<int> distrX(rangeFrom, rangeTo);
-			x = distrX(gen);
+			x = randomInt(0, (m_mapSizeX - 1));
+			y = randomInt(0, (m_hiddenPart / 2) - 1);
 			if (isLocationEmpty(x, y) == true)
 			{
-				m_spawnedActors.push_back(new Comet(x, y, 'y', 1, randomSpeed()));
+				if (s == 1)
+				{
+					spawn(new Comet(x, y, 'y', 1, randomSpeed()));
+				}
+				else if (s == 2)
+				{
+					spawn(new Enemy(x, y, "E", randomSpeed()));
+				}
 			}
 		}
-		else if (distr(gen) == 4) // Spawn en bas.
+		else if (iRand == 4) // Spawn en bas.
 		{
-			rangeFrom = m_mapSizeY - (m_hiddenPart / 2);
-			rangeTo = m_mapSizeY - 1;
-			std::uniform_int_distribution<int> distrY(rangeFrom, rangeTo);
-			y = distrY(gen);
-			rangeFrom = 0;
-			rangeTo = m_mapSizeX - 1;
-			std::uniform_int_distribution<int> distrX(rangeFrom, rangeTo);
-			x = distrX(gen);
+			x = randomInt(0, (m_mapSizeX - 1));
+			y = randomInt((m_mapSizeY - (m_hiddenPart / 2)), (m_mapSizeY - 1));
 			if (isLocationEmpty(x, y) == true)
 			{
-				m_spawnedActors.push_back(new Comet(x, y, 'y', 0, randomSpeed()));
+				if (s == 1)
+				{
+					spawn(new Comet(x, y, 'y', 0, randomSpeed()));
+				}
+				else if (s == 2)
+				{
+					spawn(new Enemy(x, y, "E", randomSpeed()));
+				}
 			}
 		}
+		
 	}
 }
 // ----------------- 
+
+// ----- Spawn chances for each actor -----
+int GameLogic::spawnSelection()
+{
+	int rangeFrom(1), rangeTo(2), s(0);
+
+	m_cometsCounter = 0;
+	for (std::size_t i = 1; i < m_spawnedActors.size(); i++) // Check comets amount
+	{
+		if ((typeid(*m_spawnedActors.at(i)) == typeid(Comet)) == true) // Compare objects' types
+		{
+			m_cometsCounter++;
+		}
+	}
+	if (m_cometsCounter >= (m_actorsAmountLimit / 4))
+	{
+		rangeFrom = 2;
+		
+	}
+	s = randomInt(rangeFrom, rangeTo);
+	
+	return s;
+}
+// ----------------------------------------
 
 // ----- Unspawn an actor -----
 void GameLogic::removeActor(int actorId)
@@ -418,6 +473,16 @@ float GameLogic::randomSpeed()
 }
 // ----------------------------------
 
+// ----- Random int generator -----
+int GameLogic::randomInt(int rangeFrom, int rangeTo)
+{
+	std::random_device rd; // obtain a random number from hardware
+	std::mt19937 gen(rd()); // seed the generator
+	std::uniform_int_distribution<int> distr(rangeFrom, rangeTo); // define the range
+
+	return distr(gen);
+}
+// --------------------------------
 
 // ----- Get actors' positions on screen -----
 int GameLogic::getActorXPositionOnScreen(int actorId, Layout& Screen)
