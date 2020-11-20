@@ -1,5 +1,7 @@
 #include "Actor.h"
 
+#include "GameLogic.h"
+
 
 // ----- Constructeur/Destructeur -----
 Actor::Actor(int x, int y, std::string visualAspect) : m_positionX(x), m_positionY(y), m_visualAspect(visualAspect) {}
@@ -9,23 +11,26 @@ Actor::Actor(int x, int y, std::string visualAspect, int color) : m_positionX(x)
 Actor::~Actor(){}
 // ------------------------------------
 
-bool Actor::moveTo(int x, int y) {
-	bool valid = true;
+bool Actor::moveTo(int x, int y)
+{
+	// Is the destination valid?
+	bool valid = GameLogic::getGameLogic()->isLocationEmpty(x, y);
 
-	//TODO: implement GameLogic as following
-	//Actor actorAtDestination = GameLogic.GetActorAt(x, y);
-
-
-	/*if (valid) {
-		m_positionX = (x != NULL) ? x : m_positionX;
-		m_positionY = (y != NULL) ? y : m_positionY;
-	}*/
-	m_positionX = x;
-	m_positionY = y;
+	if (valid) {
+		m_positionX = x;
+		m_positionY = y;
+	}
+	else
+	{
+		// There is already someone at destination... Collision!
+		Actor* actorAtDestination = GameLogic::getGameLogic()->getActor(x, y);
+		collideWith(actorAtDestination);
+		actorAtDestination->collideWith(this);
+	}
 	return valid;
 }
 
-void Actor::collideWith(Actor& collider)
+void Actor::collideWith(Actor* collider)
 {
 	return;
 }

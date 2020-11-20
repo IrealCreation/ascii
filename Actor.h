@@ -51,7 +51,7 @@ public:
 	/// What happens when I collide with another actor?
 	/// </summary>
 	/// <param name="collider">The actor I collide with</param>
-	void collideWith(Actor& collider);
+	void collideWith(Actor* collider);
 
 	int getCollisionDamages();
   

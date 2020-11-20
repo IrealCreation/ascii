@@ -221,10 +221,10 @@ bool GameLogic::isLocationEmpty(int x, int y)
 // ----------------------------------------------
 
 // ----- Get Actor from list by location -----
-Actor& GameLogic::getActor(int x, int y)
+Actor* GameLogic::getActor(int x, int y)
 {
 	int actorId = getActorIdByLocation(x, y);
-	return (*m_spawnedActors.at(actorId));
+	return m_spawnedActors.at(actorId);
 }
 // -------------------------------------------
 

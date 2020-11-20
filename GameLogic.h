@@ -39,7 +39,7 @@ public:
 
 	// Actors interactions
 	bool isLocationEmpty(int x, int y);
-	Actor& getActor(int x, int y);
+	Actor* getActor(int x, int y);
 	Character* getCharacter();
 	void removeActor(Actor& actor);
 

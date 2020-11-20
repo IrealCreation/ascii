@@ -20,9 +20,9 @@ void Enemy::tick(float deltaTime)
 	m_moveRemaining = modff(move, &completeMove);
 
 	//Get the main character from GameLogic
-	Character* character = (*GameLogic::getGameLogic()).getCharacter();
-	int targetX = (*character).getPositionX();
-	int targetY = (*character).getPositionY();
+	Character* character = GameLogic::getGameLogic()->getCharacter();
+	int targetX = character->getPositionX();
+	int targetY = character->getPositionY();
 
 	while(completeMove > 0)
 	{
