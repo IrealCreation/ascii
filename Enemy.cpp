@@ -20,7 +20,7 @@ void Enemy::tick(float deltaTime)
 	m_moveRemaining = modff(move, &completeMove);
 
 	//Get the main character from GameLogic
-	Character* character = GameLogic::getGameLogic()->getCharacter();
+	Character* character = (*GameLogic::getGameLogic()).getCharacter();
 	int targetX = (*character).getPositionX();
 	int targetY = (*character).getPositionY();
 
@@ -30,7 +30,7 @@ void Enemy::tick(float deltaTime)
 		
 		if(targetX != m_positionX && targetY != m_positionY)
 		{
-			// The character is in a different row and column
+			// The target is in a different row and column, so we can move in either axis
 			int diffX = abs(targetX - m_positionX);
 			int diffY = abs(targetY - m_positionY);
 
@@ -55,10 +55,28 @@ void Enemy::tick(float deltaTime)
 				success = moveTo(m_positionY + direction, m_positionY);
 			}
 		}
+		else if(targetX == m_positionX)
+		{
+			// The target is in the same column
+			// Is the target upper or lower in the axis?
+			int direction = (targetY > m_positionY) ? 1 : -1;
+
+			// Make the move and check if it's successful
+			success = moveTo(m_positionY + direction, m_positionY);
+		}
+		else
+		{
+			// The target is in the same row
+			// Is the target upper or lower in the axis?
+			int direction = (targetX > m_positionX) ? 1 : -1;
+
+			// Make the move and check if it's successful
+			success = moveTo(m_positionX + direction, m_positionX);
+		}
 
 		if (!success)
 		{
-			// Oops, the enemy collided with something... we interrupt the whole move by breaking out of the loop
+			// Oops, we collided with something... we interrupt the whole move by breaking out of the loop
 			break;
 		}
 		completeMove--;
