@@ -36,14 +36,14 @@ void Enemy::tick(float deltaTime)
 
 			// We pick an axis to move to using weighted random (we're more likely to pick the axis where the target is furthest
 			int random = rand() % (diffX + diffY);
-			if(random > diffX)
+			if(random <= diffX)
 			{
 				// We move on the X axis!
 				// Is the target upper or lower in the axis?
 				int direction = (targetX > m_positionX) ? 1 : -1;
 
 				// Make the move and check if it's successful
-				success = moveTo(m_positionX + direction, m_positionX);
+				success = moveTo(m_positionX + direction, m_positionY);
 			}
 			else
 			{
@@ -52,7 +52,7 @@ void Enemy::tick(float deltaTime)
 				int direction = (targetY > m_positionY) ? 1 : -1;
 
 				// Make the move and check if it's successful
-				success = moveTo(m_positionY + direction, m_positionY);
+				success = moveTo(m_positionX, m_positionY + direction);
 			}
 		}
 		else if(targetX == m_positionX)
@@ -62,7 +62,7 @@ void Enemy::tick(float deltaTime)
 			int direction = (targetY > m_positionY) ? 1 : -1;
 
 			// Make the move and check if it's successful
-			success = moveTo(m_positionY + direction, m_positionY);
+			success = moveTo(m_positionX, m_positionY + direction);
 		}
 		else
 		{
@@ -71,7 +71,7 @@ void Enemy::tick(float deltaTime)
 			int direction = (targetX > m_positionX) ? 1 : -1;
 
 			// Make the move and check if it's successful
-			success = moveTo(m_positionX + direction, m_positionX);
+			success = moveTo(m_positionX + direction, m_positionY);
 		}
 
 		if (!success)
