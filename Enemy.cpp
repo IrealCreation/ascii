@@ -2,7 +2,7 @@
 #include "GameLogic.h"
 
 // ----- Constructeur/Destructeur -----
-Enemy::Enemy(int x, int y, std::string name, float speed) : Destructible(x, y, 100, "e"), m_name(name), m_speed(speed) {}
+Enemy::Enemy(int x, int y, std::string name, float speed) : Destructible(x, y, 10, "e"), m_name(name), m_speed(speed) {}
 
 Enemy::~Enemy() {}
 // ------------------------------------
@@ -57,7 +57,7 @@ void Enemy::tick(float deltaTime)
 		}
 		else if(targetX == m_positionX)
 		{
-			// The target is in the same column
+			// The target is in the same column: we move on the Y axis
 			// Is the target upper or lower in the axis?
 			int direction = (targetY > m_positionY) ? 1 : -1;
 
@@ -66,7 +66,7 @@ void Enemy::tick(float deltaTime)
 		}
 		else
 		{
-			// The target is in the same row
+			// The target is in the same row: we move on the X axis
 			// Is the target upper or lower in the axis?
 			int direction = (targetX > m_positionX) ? 1 : -1;
 

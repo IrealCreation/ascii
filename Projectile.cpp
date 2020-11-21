@@ -23,21 +23,32 @@ void Projectile::tick(float deltaTime)
 	m_moveRemaining = modff(move, &completeMove);
 
 	// Perform the move in the programmed direction
-	int newPosX = m_positionX;
-	int newPosY = m_positionY;
-	if (m_axis == "x")
+	while(completeMove > 0)
 	{
-		newPosX += completeMove * ((m_direction) ? 1 : -1);
+		int newPosX = m_positionX;
+		int newPosY = m_positionY;
+		if (m_axis == "x")
+		{
+			newPosX += ((m_direction) ? 1 : -1);
+		}
+		else
+		{
+			newPosY += ((m_direction) ? 1 : -1);
+		}
+		bool success = moveTo(newPosX, newPosY);
+
+		if(!success)
+		{
+			// We collided something, stop the whole movement
+			break;
+		}
+		
+		completeMove--;
 	}
-	else
-	{
-		newPosY += completeMove * ((m_direction) ? 1 : -1);
-	}
-	moveTo(newPosX, newPosY);
 }
 
-void Projectile::collideWith(Actor& collider)
+void Projectile::collideWith(Actor* collider)
 {
-	// The comet is immediately destroyed when collided
+	// The projectile is immediately destroyed when collided
 	destroy();
 }

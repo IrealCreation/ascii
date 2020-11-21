@@ -10,7 +10,7 @@ GameLogic* GameLogic::m_mainGameLogic;
 
 
 // ----- Constructeurs -----
-GameLogic::GameLogic() : m_mapSizeX(55), m_mapSizeY(55), m_hiddenPart(20), m_timingMs(50), m_timingS(m_timingMs / (float)1000.00), m_speedMin((float)5), m_speedMax((float)15)
+GameLogic::GameLogic() : m_mapSizeX(55), m_mapSizeY(55), m_hiddenPart(20), m_timingMs(50), m_timingS(m_timingMs / (float)1000.00), m_speedMin((float)2), m_speedMax((float)10)
 {
 	// Setup the static variable m_mainGameLogic so it can be accessed by anyone through GameLogic.getGameLogic()
 	GameLogic::m_mainGameLogic = this;
@@ -151,21 +151,25 @@ void GameLogic::newGame()
 		// ----- Efface l'ancienne position des acteurs -----
 		removeAllActorsFromScreen(MainScreen);
 		// --------------------------------------------------
-	
+
+		// Tick chaque acteur
 		for (std::size_t i = 0; i < m_spawnedActors.size(); i++) // Pour chaque acteur présent.
 		{
 			(*m_spawnedActors.at(i)).tick(m_timingS); // Lance le tick de chaque acteur.
+		}
 
+		// Despawn les acteurs sortis de la map (doit être fait dans une boucle à part pour éviter les erreurs avec les acteurs détruits lors du tick)
+		for (std::size_t i = 0; i < m_spawnedActors.size(); i++) // Pour chaque acteur présent.
+		{
 			if ((*m_spawnedActors.at(i)).getPositionX() < 0 || (*m_spawnedActors.at(i)).getPositionX() > m_mapSizeX || (*m_spawnedActors.at(i)).getPositionY() < 0 || (*m_spawnedActors.at(i)).getPositionY() > m_mapSizeY) // Si l'acteur sort de la map.
 			{
 				removeActor(i); // Supprime l'acteur.
 				actorsRemoved++;
 				SideScreen.setGrid(5, 6, std::to_string(actorsRemoved));
-				
 			}
 
 		}
-		//spawn();
+		spawn();
 		inputs();
 
 		for (std::size_t i = 0; i < m_spawnedActors.size(); i++) // Place chaque acteur sur l'écran.
@@ -229,9 +233,9 @@ Actor* GameLogic::getActor(int x, int y)
 // -------------------------------------------
 
 // ----- Unspawn an actor by reference -----
-void GameLogic::removeActor(Actor& actor)
+void GameLogic::removeActor(Actor* actor)
 {
-	int x = actor.getPositionX(), y = actor.getPositionY();
+	int x = actor->getPositionX(), y = actor->getPositionY();
 	int ID = getActorIdByLocation(x, y);
 	removeActor(ID);
 }

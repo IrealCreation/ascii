@@ -22,7 +22,7 @@ bool Actor::moveTo(int x, int y)
 	}
 	else
 	{
-		// There is already someone at destination... Collision!
+		// There is already someone at destination... collision!
 		Actor* actorAtDestination = GameLogic::getGameLogic()->getActor(x, y);
 		collideWith(actorAtDestination);
 		actorAtDestination->collideWith(this);

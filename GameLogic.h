@@ -41,7 +41,7 @@ public:
 	bool isLocationEmpty(int x, int y);
 	Actor* getActor(int x, int y);
 	Character* getCharacter();
-	void removeActor(Actor& actor);
+	void removeActor(Actor* actor);
 
 	void spawn(Actor *actor);
 

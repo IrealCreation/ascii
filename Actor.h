@@ -36,10 +36,10 @@ public:
 	/// <summary>
 	/// Move the actor to the specified coordinates
 	/// </summary>
-	/// <param name="x">X coordinate. If null, stay unchanged.</param>
-	/// <param name="y">Y coordinate. if null, stay unchanged.</param>
+	/// <param name="x">X coordinate</param>
+	/// <param name="y">Y coordinate</param>
 	/// <returns>True if the move could be done, false otherwise</returns>
-	bool moveTo(int x, int y);
+	virtual bool moveTo(int x, int y);
 
 	/// <summary>
 	/// tick should be called at each game update
@@ -51,7 +51,7 @@ public:
 	/// What happens when I collide with another actor?
 	/// </summary>
 	/// <param name="collider">The actor I collide with</param>
-	void collideWith(Actor* collider);
+	virtual void collideWith(Actor* collider);
 
 	int getCollisionDamages();
   

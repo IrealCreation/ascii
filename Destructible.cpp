@@ -1,5 +1,7 @@
 #include "Destructible.h"
 
+#include "GameLogic.h"
+
 
 // ----- Constructeur/Destructeur -----
 Destructible::Destructible(int x, int y, int health, std::string visualAspect) : Actor(x, y, visualAspect), m_health(health) {}
@@ -15,7 +17,7 @@ Destructible::~Destructible() {}
 /// <returns>True if the actor is destroyed, false otherwise.</returns>
 bool Destructible::receiveDamages(int damages) {
 	m_health -= damages;
-	if (damages <= 0) {
+	if (m_health <= 0) {
 		destroy();
 		return true;
 	}
@@ -23,15 +25,15 @@ bool Destructible::receiveDamages(int damages) {
 }
 
 /// <summary>
-/// destroy this destructible
+/// Destroy this destructible
 /// </summary>
 void Destructible::destroy() {
-	//TODO: spawn loot?
+	GameLogic::getGameLogic()->removeActor(this);
 
-	//TODO: inform the GameLogic that I'm not here anymore.
+	//TODO: spawn loot?
 }
 
-void Destructible::collideWith(Actor& collider)
+void Destructible::collideWith(Actor* collider)
 {
-	receiveDamages(collider.getCollisionDamages());
+	receiveDamages(collider->getCollisionDamages());
 }

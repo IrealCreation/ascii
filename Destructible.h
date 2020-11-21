@@ -25,13 +25,11 @@ public:
 	
 	virtual void tick(float deltaTime) = 0;
 
-
-
 	/// <summary>
 	/// What happens when I collide with another actor?
 	/// </summary>
 	/// <param name="collider">The actor I collide with</param>
-	void collideWith(Actor& collider);
+	virtual void collideWith(Actor* collider);
 	// --------------------
 
 
