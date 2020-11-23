@@ -16,9 +16,13 @@
 
 #include "Actor.h"
 #include "Character.h"
+#include "Asteroid.h"
 #include "Comet.h"
 #include "Enemy.h"
 #include "Layout.h"
+
+#include "Pickable.h"
+#include "PFuel.h"
 // -------------------
 
 // ----- Macros -----
@@ -35,6 +39,10 @@ public:
 	GameLogic();
 	~GameLogic();
 	
+	// ----- Get -----
+	static GameLogic* getGameLogic();
+	// ---------------
+
 	void newGame();
   
 
@@ -87,6 +95,8 @@ private:
 	
 	int m_actorsAmountLimit;
 	int m_asteroidsCounter, m_cometsCounter; // Counters
+
+	static GameLogic* m_mainGamelogic;
 	// ---------------------
 	
 };

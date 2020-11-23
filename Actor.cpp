@@ -2,7 +2,10 @@
 
 
 // ----- Constructeur/Destructeur -----
-Actor::Actor(int x, int y, std::string visualAspect) : m_positionX(x), m_positionY(y), m_visualAspect(visualAspect) {}
+Actor::Actor(int x, int y, std::string visualAspect) : m_positionX(x), m_positionY(y), m_visualAspect(visualAspect) 
+{
+
+}
 
 Actor::Actor(int x, int y, std::string visualAspect, int color) : m_positionX(x), m_positionY(y), m_visualAspect(visualAspect), m_color(color) {}
 

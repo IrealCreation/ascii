@@ -2,6 +2,8 @@
 
 
 
+GameLogic* GameLogic::m_mainGamelogic;
+
 
 // _getch() pour récupérer les inputs du joueur
 
@@ -9,6 +11,7 @@
 GameLogic::GameLogic() : m_mapSizeX(55), m_mapSizeY(55), m_hiddenPart(20), m_timingMs(50), m_timingS(m_timingMs / (float)1000.00), m_speedMin((float)5), m_speedMax((float)15),
 m_actorsAmountLimit(20), m_asteroidsCounter(0), m_cometsCounter(0)
 {
+	GameLogic::m_mainGamelogic = this;
 	initialisation();
 }
 // -------------------------
@@ -17,6 +20,9 @@ m_actorsAmountLimit(20), m_asteroidsCounter(0), m_cometsCounter(0)
 GameLogic::~GameLogic(){}
 // ------------------------
 
+// ----- Get -----
+GameLogic* GameLogic::getGameLogic() { return m_mainGamelogic; }
+// ---------------
 
 // ----- New Game -----
 void GameLogic::newGame()
@@ -34,7 +40,7 @@ void GameLogic::newGame()
 	MainMenu.setGrid(14, 18, "Quit Game");
 	MainMenu.refresh();
 	// ----------------------------
-
+	
 	//int c = 0;
 	//switch ((c=_getch())){...}
 	int cursorPosition = 0;
@@ -130,16 +136,18 @@ void GameLogic::newGame()
 	setActorPositionOnScreen(0, MainScreen);
 	MainScreen.refresh();
 
-	Layout SideScreen(20, 10, 5, 0, MainScreen, "y");
+	Layout SideScreen(20, 15, 5, 0, MainScreen, "y");
 	SideScreen.setGrid(5, 0, "- Debug -");
 	SideScreen.setGrid(5, 5, "Removed Actors:");
 	SideScreen.setGrid(5, 8, "Comets:");
+	SideScreen.setGrid(5, 11, "Asteroids:");
 
 	std::string actorsAmount;
 	int actorsRemoved = 0;
 
-
-
+	//spawn(new Enemy(15, 12, "R", 1));
+	//spawn(new Asteroid(17, 12));
+	spawn(new PFuel(17, 16));
 	for (int j = 0; j < 500; j++)
 	{
 		// ----- Efface l'ancienne position des acteurs -----
@@ -159,7 +167,7 @@ void GameLogic::newGame()
 			}
 
 		}
-		spawn();
+		//spawn();
 		inputs();
 
 		for (std::size_t i = 0; i < m_spawnedActors.size(); i++) // Place chaque acteur sur l'écran.
@@ -171,6 +179,7 @@ void GameLogic::newGame()
 		actorsAmount = std::to_string((int)m_spawnedActors.size());
 		SideScreen.setGrid(5, 4, actorsAmount);
 		SideScreen.setGrid(5, 9, std::to_string(m_cometsCounter));
+		SideScreen.setGrid(5, 12, std::to_string(m_asteroidsCounter));
 		SideScreen.refresh();
 		std::this_thread::sleep_for(std::chrono::milliseconds((long)m_timingMs));
 	}
@@ -300,8 +309,8 @@ void GameLogic::initialisation()
 	// -----------------------------------------------------
 
 	// ----- Initialisation de <random> -----
-	std::random_device rd; // obtain a random number from hardware
-	std::mt19937 gen(rd()); // seed the generator
+	//std::random_device rd; // obtain a random number from hardware
+	//std::mt19937 gen(rd()); // seed the generator
 	// --------------------------------------
 }	
 // --------------------------
@@ -356,21 +365,19 @@ void GameLogic::spawn()
 	int x(0), y(0), iRand(randomInt(1, 4)), s(spawnSelection());
 
 	// -----------------------------------
-	if ((m_spawnedActors.size()) < m_actorsAmountLimit) 
+	if (((int)(m_spawnedActors.size())) < m_actorsAmountLimit) 
 	{
 		if (iRand == 1) // Spawn à gauche.
 		{
 			x = randomInt(0, (m_hiddenPart / 2) - 1);
 			y = randomInt(0, m_mapSizeY - 1);
 			if (isLocationEmpty(x, y) == true)
-			{
-				if (s == 1)
+			{ 
+				switch (s) 
 				{
-					spawn(new Comet(x, y, 'x', 1, randomSpeed()));
-				}
-				else if (s == 2)
-				{
-					spawn(new Enemy(x, y, "E", randomSpeed()));
+				case 1: spawn(new Asteroid(x, y)); break;
+				case 2: spawn(new Comet(x, y, 'x', 1, randomSpeed())); break;
+				case 3: spawn(new Enemy(x, y, "E", randomSpeed())); break;
 				}
 			}
 		}
@@ -380,13 +387,11 @@ void GameLogic::spawn()
 			y = randomInt(0, (m_mapSizeY - 1));
 			if (isLocationEmpty(x, y) == true)
 			{
-				if (s == 1)
+				switch (s)
 				{
-					spawn(new Comet(x, y, 'x', 0, randomSpeed()));
-				}
-				else if (s == 2)
-				{
-					spawn(new Enemy(x, y, "E", randomSpeed()));
+				case 1: spawn(new Asteroid(x, y)); break;
+				case 2: spawn(new Comet(x, y, 'x', 0, randomSpeed())); break;
+				case 3: spawn(new Enemy(x, y, "E", randomSpeed())); break;
 				}
 			}
 		}
@@ -394,15 +399,11 @@ void GameLogic::spawn()
 		{
 			x = randomInt(0, (m_mapSizeX - 1));
 			y = randomInt(0, (m_hiddenPart / 2) - 1);
-			if (isLocationEmpty(x, y) == true)
-			{
-				if (s == 1)
-				{
-					spawn(new Comet(x, y, 'y', 1, randomSpeed()));
-				}
-				else if (s == 2)
-				{
-					spawn(new Enemy(x, y, "E", randomSpeed()));
+			if (isLocationEmpty(x, y) == true) {
+				switch (s) {
+				case 1: spawn(new Asteroid(x, y)); break;
+				case 2: spawn(new Comet(x, y, 'y', 1, randomSpeed())); break;
+				case 3: spawn(new Enemy(x, y, "E", randomSpeed())); break;
 				}
 			}
 		}
@@ -412,13 +413,11 @@ void GameLogic::spawn()
 			y = randomInt((m_mapSizeY - (m_hiddenPart / 2)), (m_mapSizeY - 1));
 			if (isLocationEmpty(x, y) == true)
 			{
-				if (s == 1)
+				switch (s)
 				{
-					spawn(new Comet(x, y, 'y', 0, randomSpeed()));
-				}
-				else if (s == 2)
-				{
-					spawn(new Enemy(x, y, "E", randomSpeed()));
+				case 1: spawn(new Asteroid(x, y)); break;
+				case 2: spawn(new Comet(x, y, 'y', 0, randomSpeed())); break;
+				case 3: spawn(new Enemy(x, y, "E", randomSpeed())); break;
 				}
 			}
 		}
@@ -430,22 +429,33 @@ void GameLogic::spawn()
 // ----- Spawn chances for each actor -----
 int GameLogic::spawnSelection()
 {
-	int rangeFrom(1), rangeTo(2), s(0);
+	int rangeFrom(1), rangeTo(3), s(0);
 
 	m_cometsCounter = 0;
+	m_asteroidsCounter = 0;
 	for (std::size_t i = 1; i < m_spawnedActors.size(); i++) // Check comets amount
 	{
 		if ((typeid(*m_spawnedActors.at(i)) == typeid(Comet)) == true) // Compare objects' types
 		{
 			m_cometsCounter++;
 		}
+		if ((typeid(*m_spawnedActors.at(i)) == typeid(Asteroid)) == true) // Compare objects' types
+		{
+			m_asteroidsCounter++;
+		}
 	}
-	if (m_cometsCounter >= (m_actorsAmountLimit / 4))
-	{
-		rangeFrom = 2;
-		
-	}
+
 	s = randomInt(rangeFrom, rangeTo);
+
+	if (s == 1 && m_asteroidsCounter >= (m_actorsAmountLimit / 5)) // If s = 1 but they are too many asteroids, then try to spawn a Comet
+	{
+		s = 2;
+	}
+	if (s == 2 && m_cometsCounter >= (m_actorsAmountLimit / 4)) // If s = 2 but they are too many Comets, then try to spawn an enemy
+	{
+		s = 3;
+	}
+
 	
 	return s;
 }
@@ -505,7 +515,6 @@ void GameLogic::removeAllActorsFromScreen(Layout &Screen)
 
 	for (std::size_t i = 1; i < m_spawnedActors.size(); i++)
 	{
-
 		x = (*m_spawnedActors.at(i)).getPositionX();
 		y = (*m_spawnedActors.at(i)).getPositionY();
 		if (x < m_mapSizeX - (m_hiddenPart / 2) && x >= (m_hiddenPart / 2) && y < m_mapSizeY - (m_hiddenPart / 2) && y >= (m_hiddenPart / 2))

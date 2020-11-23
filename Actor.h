@@ -2,6 +2,7 @@
 
 // ----- Headers -----
 #include <string>
+#include "GameLogic.h"
 // -------------------
 
 
