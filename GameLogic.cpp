@@ -336,7 +336,7 @@ void GameLogic::moveCharacterTowards(int x, int y)
 
 	if(success)
 	{
-		// The movement is successfully done, let's scroll the map by moving each actor (character included) by the opposite vect
+		// The movement is successfully done, let's scroll the map by moving each actor (character included) by the opposite vector
 		for (std::size_t i = 0; i < m_spawnedActors.size(); i++)
 		{
 			m_spawnedActors.at(i)->setPosition(m_spawnedActors.at(i)->getPositionX() - x, m_spawnedActors.at(i)->getPositionY() - y);
