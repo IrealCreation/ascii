@@ -1,6 +1,7 @@
 #include "GameLogic.h"
 
 #include "Enemy.h"
+#include "Ephemeral.h"
 
 
 // _getch() pour récupérer les inputs du joueur
@@ -206,7 +207,6 @@ GameLogic* GameLogic::getGameLogic()
 // ----- Vérifie si un emplacement est vide -----
 bool GameLogic::isLocationEmpty(int x, int y)
 {
-	bool output = true; // Emplacement vide par défaut.
 	int selectedX(x), selectedY(y); // Coordonnées x y qu'on souhaite vérifier.
 	int actorX(0), actorY(0); // Coordonnées des acteurs.
 
@@ -216,11 +216,18 @@ bool GameLogic::isLocationEmpty(int x, int y)
 		actorY = (*m_spawnedActors.at(i)).getPositionY();
 		if (actorX == selectedX && actorY == selectedY) // Si les coordonnées correspondent à celle d'un acteur
 		{
-			output = false; // alors l'emplacement n'est pas vide.
+			if(m_spawnedActors.at(i)->getCollision()) // Si celui-ci déclenche une collision...
+			{
+				return false; // ...alors l'emplacement n'est pas vide
+			}
+			else
+			{
+				removeActor(m_spawnedActors.at(i)); // Sinon, on retire cet acteur éphémère pour permettre l'entrée
+			}
 		}
 	}
 
-	return output;
+	return true; // On est arrivés jusqu'ici : l'emplacement est vide !
 }
 // ----------------------------------------------
 
@@ -233,11 +240,16 @@ Actor* GameLogic::getActor(int x, int y)
 // -------------------------------------------
 
 // ----- Unspawn an actor by reference -----
-void GameLogic::removeActor(Actor* actor)
+void GameLogic::removeActor(Actor* actor, bool spawnDebris)
 {
 	int x = actor->getPositionX(), y = actor->getPositionY();
 	int ID = getActorIdByLocation(x, y);
 	removeActor(ID);
+
+	if(spawnDebris)
+	{
+		spawn(new Ephemeral(x, y, "*", 7, 1));
+	}
 }
 // -----------------------------------------
 
@@ -300,34 +312,36 @@ void GameLogic::inputs()
 		switch (_getch())
 		{
 		case KEY_UP:
-			for (std::size_t i = 1; i < m_spawnedActors.size(); i++)
-			{
-				(*m_spawnedActors.at(i)).setPositionY(((*m_spawnedActors.at(i)).getPositionY()) + 1);
-			}
+			moveCharacterTowards(0, -1);
 			break;
 		case KEY_LEFT:
-			for (std::size_t i = 1; i < m_spawnedActors.size(); i++)
-			{
-				(*m_spawnedActors.at(i)).setPositionX(((*m_spawnedActors.at(i)).getPositionX()) + 1);
-			}
+			moveCharacterTowards(-1, 0);
 			break;
 		case KEY_RIGHT:
-			for (std::size_t i = 1; i < m_spawnedActors.size(); i++)
-			{
-				(*m_spawnedActors.at(i)).setPositionX(((*m_spawnedActors.at(i)).getPositionX()) - 1);
-			}
+			moveCharacterTowards(1, 0);
 			break;
 		case KEY_DOWN:
-			for (std::size_t i = 1; i < m_spawnedActors.size(); i++)
-			{
-				(*m_spawnedActors.at(i)).setPositionY(((*m_spawnedActors.at(i)).getPositionY()) - 1);
-			}
+			moveCharacterTowards(0, 1);
 			break;
 		default:
 			break;
 		}
 	}
 	BlockInput(true);
+}
+
+void GameLogic::moveCharacterTowards(int x, int y)
+{
+	bool success = m_mainCharacter->moveTo(m_mainCharacter->getPositionX() + x, m_mainCharacter->getPositionY() + y);
+
+	if(success)
+	{
+		// The movement is successfully done, let's scroll the map by moving each actor (character included) by the opposite vect
+		for (std::size_t i = 0; i < m_spawnedActors.size(); i++)
+		{
+			m_spawnedActors.at(i)->setPosition(m_spawnedActors.at(i)->getPositionX() - x, m_spawnedActors.at(i)->getPositionY() - y);
+		}
+	}
 }
 // ----------------------------
 

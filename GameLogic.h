@@ -41,7 +41,7 @@ public:
 	bool isLocationEmpty(int x, int y);
 	Actor* getActor(int x, int y);
 	Character* getCharacter();
-	void removeActor(Actor* actor);
+	void removeActor(Actor* actor, bool spawnDebris = false);
 
 	void spawn(Actor *actor);
 
@@ -52,6 +52,8 @@ private:
 	void initialisation();
 
 	void inputs();
+
+	void moveCharacterTowards(int x, int y);
 
 	// Spawn/Despawn
 	void spawn();

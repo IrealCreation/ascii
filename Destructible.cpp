@@ -28,7 +28,7 @@ bool Destructible::receiveDamages(int damages) {
 /// Destroy this destructible
 /// </summary>
 void Destructible::destroy() {
-	GameLogic::getGameLogic()->removeActor(this);
+	GameLogic::getGameLogic()->removeActor(this, true);
 
 	//TODO: spawn loot?
 }

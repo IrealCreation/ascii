@@ -28,6 +28,7 @@ public:
 	// ---------------
   
   // ----- Set -----
+	void setPosition(int x, int y);
 	void setPositionX(int x);
 	void setPositionY(int y);
   // ---------------
@@ -53,6 +54,8 @@ public:
 	/// <param name="collider">The actor I collide with</param>
 	virtual void collideWith(Actor* collider);
 
+	bool getCollision();
+
 	int getCollisionDamages();
   
 	// --------------------
@@ -71,6 +74,11 @@ protected:
 	/// The color in which the actor is visually rendered
 	/// </summary>
 	int m_color = 7;
+
+	/// <summary>
+	/// Do I trigger collision when someone tries to enter my tile (true), or do I simply disappear (false)? 
+	/// </summary>
+	bool m_collision = true;
 
 	/// <summary>
 	/// How much damages I inflict when someone collides me?

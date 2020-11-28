@@ -35,6 +35,11 @@ void Actor::collideWith(Actor* collider)
 	return;
 }
 
+bool Actor::getCollision()
+{
+	return m_collision;
+}
+
 std::string Actor::getVisualAspect() { return m_visualAspect; }
 
 int Actor::getColor() { return m_color; }
@@ -43,6 +48,11 @@ int Actor::getCollisionDamages() { return m_collisionDamages; }
 
 int Actor::getPositionX() { return m_positionX; }
 int Actor::getPositionY() { return m_positionY; }
+void Actor::setPosition(int x, int y)
+{
+	m_positionX = x;
+	m_positionY = y;
+}
 void Actor::setPositionX(int x) { m_positionX = x; }
 void Actor::setPositionY(int y) { m_positionY = y; }
 
